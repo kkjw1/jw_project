@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>회원가입 페이지</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+
+    <style>
+        html, body {
+            height: 100%;
+        }
+        .register-container {
+            /* 로그인 컨테이너와 동일한 너비와 스타일로 통일성을 유지 */
+            max-width: 450px; /* 로그인보다 필드가 많을 수 있어 약간 넓게 설정 */
+            padding: 30px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,.05);
+            background-color: #fff;
+        }
+    </style>
+</head>
+<body class="d-flex justify-content-center align-items-center bg-light">
+
+<div class="register-container">
+    <h3 class="text-center mb-4">회원가입</h3>
+
+    <form action="login.html" th:action="@{/signup}" method="post" th:object="${member}">
+        <div class="form-group">
+            <label for="memberId">사용자 아이디</label>
+            <input
+                    type="text"
+                    class="form-control"
+                    id="memberId"
+                    placeholder="아이디를 입력하세요"
+                    th:field="*{memberId}"
+            >
+        </div>
+        <div class="form-group">
+            <label for="memberName">사용자 이름</label>
+            <input
+                    type="text"
+                    class="form-control"
+                    id="memberName"
+                    placeholder="예: example@domain.com"
+                    th:field="*{memberName}"
+            >
+        </div>
+
+        <div class="form-group">
+            <label for="address">주소</label>
+            <input
+                    type="text"
+                    class="form-control"
+                    id="address"
+                    placeholder="예: example@domain.com"
+                    th:field="*{address}"
+            >
+        </div>
+
+        <div class="form-group">
+            <label for="password">비밀번호</label>
+            <input
+                    type="password"
+                    class="form-control"
+                    id="password"
+                    placeholder="최소 8자 이상의 비밀번호"
+                    th:field="*{password}"
+            >
+        </div>
+
+
+        <div class="form-group form-check mb-4">
+            <input type="checkbox" class="form-check-input" id="termsAgree">
+            <label class="form-check-label" for="termsAgree">
+                <a href="#" class="text-primary text-decoration-none">이용약관 및 개인정보 처리방침</a>에 동의합니다. (필수)
+            </label>
+        </div>
+
+        <div class="mb-3">
+            <button type="submit" class="btn btn-success **w-100**" style="padding: 10px;">
+                회원가입 완료
+            </button>
+        </div>
+
+        <hr>
+
+        <div class="text-center mt-3">
+            이미 계정이 있으신가요?
+            <a href="#" onclick="location.href='login.html'" class="text-decoration-none text-primary"
+            th:onclick="|loacation.href='@{/login}'|">로그인</a>
+        </div>
+    </form>
+</div>
+
+</body>
+</html>
