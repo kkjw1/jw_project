@@ -48,7 +48,8 @@
             <label class="form-check-label" for="rememberMe">로그인 유지</label>
         </div>
 
-        <div class="text-danger mb-3" id="loginErrorMessage" style="font-size: 0.875rem;">
+        <div class="text-danger mb-3" id="loginErrorMessage" style="font-size: 0.875rem;"
+        th:if="${#fields.hasGlobalErrors()}">
             아이디 또는 비밀번호가 잘못 되었습니다. 아이디와 비밀번호를 정확히 입력해 주세요.
         </div>
 

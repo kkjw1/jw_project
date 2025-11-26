@@ -5,6 +5,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import spring.jwProject.domain.member.Member;
@@ -23,7 +25,8 @@ public class MemberController {
 
     // 로그인 페이지
     @GetMapping("/login")
-    public String loginPage(@ModelAttribute("member") Member member) {
+    public String loginPage(Model model) {
+        model.addAttribute("member", new Member());
         return "member/login";
     }
 
@@ -36,33 +39,54 @@ public class MemberController {
 
     // 로그인
     @PostMapping("/login")
-    public String login(@ModelAttribute("member") Member member) {
+    public String login(@ModelAttribute("member") Member member,
+                        BindingResult bindingResult) {
+
         Member login = service.login(member.getMemberId(), member.getPassword());
         log.info("login member={}",login);
+
         if (login == null) {
+            bindingResult.reject("loginError", null);
+        }
+
+        if (bindingResult.hasErrors()) {
+            log.info("login Fail");
             return "member/login";
         }
+
         return "home/home";
     }
 
     //회원가입 페이지
     @GetMapping("/signup")
-    public String signUpPage(@ModelAttribute("member") Member member) {
+    public String signUpPage(Model model) {
+        model.addAttribute("member", new Member());
         return "member/signup";
     }
 
     //회원가입
     @PostMapping("/signup")
-    public String signUp(@ModelAttribute("member") Member member,
+    public String signUp(@Validated @ModelAttribute("member") Member member, BindingResult bindingResult,
                          RedirectAttributes redirectAttributes, HttpServletResponse response) {
+
+
+        Member findMember = repository.findById(member.memberId).orElse(null);
+
+        if (findMember != null) {
+            // 회원가입 실패인 경우
+            bindingResult.reject("signUpError", null);
+        }
+
+        if (bindingResult.hasErrors()) {
+            log.info("error={}", bindingResult);
+            return "member/signup";
+        }
+
 
         Member signUpMember = service.signUp(member);
         log.info("signUpMember={}",signUpMember);
-        if (signUpMember != null) {
-            //회원가입이 완료된 경우 로그인 페이지로 redirect 보낸다.
-            redirectAttributes.addAttribute("loginId", signUpMember.getMemberId());
-            return "redirect:/login/{loginId}";
-        }
-        return "member/signup";
+
+        redirectAttributes.addAttribute("loginId", signUpMember.getMemberId());
+        return "redirect:/login/{loginId}";
     }
 }
