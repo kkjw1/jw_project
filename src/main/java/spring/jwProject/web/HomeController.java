@@ -1,12 +1,9 @@
 package spring.jwProject.web;
 
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import spring.jwProject.repository.member.MemberRepository;
 import spring.jwProject.repository.member.MemoryMemberRepository;
-import spring.jwProject.sevice.MemberService;
 
 @Controller
 public class HomeController {
@@ -20,11 +17,7 @@ public class HomeController {
 
     @RequestMapping({"/", "/home"})
     public String home() {
-        return "/home";
+        return "/home/home";
     }
 
-    @RequestMapping("/login")
-    public String login() {
-        return "/login";
-    }
 }

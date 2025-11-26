@@ -1,17 +1,17 @@
 package spring.jwProject.web.member;
 
-import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import spring.jwProject.domain.member.Member;
 import spring.jwProject.sevice.MemberService;
 
-import java.util.Map;
-
 @Controller
 @RequiredArgsConstructor
+@Slf4j
 public class MemberController {
 
     private final MemberService service;
@@ -20,32 +20,33 @@ public class MemberController {
     // 로그인 페이지
     @GetMapping("/login")
     public String loginPage(@ModelAttribute("member") Member member) {
-        return "/login";
+        return "member/login";
     }
 
     // 로그인
     @PostMapping("/login")
     public String login(@ModelAttribute("member") Member member) {
-        System.out.println("login member = " + member);
         Member login = service.login(member.getMemberId(), member.getPassword());
-        System.out.println("login = " + login);
+        log.info("login member={}",login);
         if (login == null) {
-            return "/login";
+            return "member/login";
         }
-        return "/home";
+        return "home/home";
     }
 
     //회원가입 페이지
     @GetMapping("/signup")
     public String signUpPage(@ModelAttribute("member") Member member) {
-        System.out.println("MemberController.signUpPage");
-        return "/signup";
+        return "member/signup";
     }
 
     //회원가입
     @PostMapping("/signup")
     public String signUp(@ModelAttribute("member") Member member) {
-        service.signUp(member);
-        return "/login";
+
+        Member signUpMember = service.signUp(member);
+        log.info("signUp member={}",member);
+
+        return "member/login";
     }
 }

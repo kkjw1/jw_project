@@ -26,6 +26,7 @@ public class MemberService {
             repository.save(member);
             return member;
         }
+        log.info("signUp Fail member={}",member);
         return null;
     }
 
