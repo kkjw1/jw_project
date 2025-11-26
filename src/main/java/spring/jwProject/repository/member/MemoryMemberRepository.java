@@ -42,6 +42,7 @@ public class MemoryMemberRepository implements MemberRepository{
     @Override
     public String delete(String memberId) {
         Member deleteMember = repository.remove(memberId);
+        log.info("delete member={}", deleteMember);
         return deleteMember.getMemberId();
     }
 
@@ -63,8 +64,8 @@ public class MemoryMemberRepository implements MemberRepository{
 
     //테스트용
     public void init() {
-        Member memberA = new Member("memberA", "userA", "1234", "addressA", VIP);
-        Member memberB = new Member("memberB", "userB", "1234", "addressB", NORMAL);
+        Member memberA = new Member("memberA", "userA", "1234", "addressA");
+        Member memberB = new Member("memberB", "userB", "1234", "addressB");
         this.save(memberA);
         this.save(memberB);
     }

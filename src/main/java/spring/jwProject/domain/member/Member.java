@@ -16,7 +16,7 @@ public class Member {
 
     }
 
-    public Member(String memberId, String memberName, String password, String address, MemberLevel grade) {
+    public Member(String memberId, String memberName, String password, String address) {
         this.memberId = memberId;
         this.memberName = memberName;
         this.password = password;
