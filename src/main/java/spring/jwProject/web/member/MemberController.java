@@ -1,6 +1,8 @@
 package spring.jwProject.web.member;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -14,8 +16,11 @@ import spring.jwProject.repository.member.MemberRepository;
 import spring.jwProject.sevice.MemberService;
 import spring.jwProject.validation.form.LoginMember;
 import spring.jwProject.validation.form.SignUpMember;
+import spring.jwProject.web.SessionConst;
 
 import java.util.Optional;
+
+import static spring.jwProject.web.SessionConst.LOGIN_MEMBER;
 
 @Controller
 @RequiredArgsConstructor
@@ -41,23 +46,35 @@ public class MemberController {
 
     // 로그인
     @PostMapping("/login")
-    public String login(@Validated @ModelAttribute("member") LoginMember member,
-                        BindingResult bindingResult) {
-
-        Member login = service.login(member.getMemberId(), member.getPassword());
-        log.info("login member={}",login);
-
-        if (login == null) {
-            bindingResult.reject("loginError", "아이디 또는 비밀번호가 잘못 되었습니다. 아이디와 비밀번호를 정확히 입력해 주세요.");
-        }
+    public String login(@Validated @ModelAttribute("member") LoginMember member, BindingResult bindingResult,
+                        HttpServletRequest request) {
 
         if (bindingResult.hasErrors()) {
             log.info("login Fail");
             return "member/login";
         }
 
-        return "home/home";
+        Member login = service.login(member.getMemberId(), member.getPassword());
+        log.info("login member={}",login);
+
+        if (login == null) {
+            bindingResult.reject("loginError", "아이디 또는 비밀번호가 잘못 되었습니다. 아이디와 비밀번호를 정확히 입력해 주세요.");
+            return "member/login";
+        }
+
+        HttpSession session = request.getSession();
+        session.setAttribute(SessionConst.LOGIN_MEMBER, login);
+        return "redirect:/";
     }
+
+
+    @GetMapping("/logout")
+    public String logout(HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        session.invalidate();
+        return "redirect:/";
+    }
+
 
     //회원가입 페이지
     @GetMapping("/signup")
