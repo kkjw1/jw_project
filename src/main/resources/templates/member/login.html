@@ -25,6 +25,11 @@
             /* 메시지 텍스트 크기(0.875rem)와 mb-3(1rem) 마진을 포함하여 높이 설정 */
             min-height: 48px;
         }
+
+        .input-error {
+            border-color: #dc3545;
+            color: #dc3545;
+        }
     </style>
 
 
@@ -35,24 +40,28 @@
     <h3 class="text-center mb-4">로그인</h3>
 
     <form action="signup.html" th:action="@{/login}" th:object="${member}" method="post">
-        <div class="form-group">
-            <input type="text" class="form-control" placeholder="아이디 또는 전화번호" th:field="*{memberId}">
+        <div th:if="${#fields.hasGlobalErrors()}">
+            <div class="text-danger mb-3" id="loginErrorMessage" style="font-size: 0.875rem;"
+                 th:each="error : ${#fields.globalErrors()}" th:text="${error}">
+                글로벌 오류 메시지
+            </div>
         </div>
 
-        <div class="form-group">
-            <input type="password" class="form-control" placeholder="비밀번호" th:field="*{password}">
+
+        <div class="form-group mb-3">
+            <input type="text" class="form-control " placeholder="아이디" th:field="*{memberId}" th:errorclass="input-error">
+            <div class="text-danger" style="font-size: 0.875rem;" th:errors="*{memberId}">아이디 에러메시지</div>
+        </div>
+
+        <div class="form-group mb-3">
+            <input type="password" class="form-control" placeholder="비밀번호" th:field="*{password}" th:errorclass="input-error">
+            <div class="text-danger" style="font-size: 0.875rem;" th:errors="*{password}">비밀번호 에러메시지</div>
         </div>
 
         <div class="form-group form-check">
             <input type="checkbox" class="form-check-input" id="rememberMe">
             <label class="form-check-label" for="rememberMe">로그인 유지</label>
         </div>
-
-        <div class="text-danger mb-3" id="loginErrorMessage" style="font-size: 0.875rem;"
-        th:if="${#fields.hasGlobalErrors()}">
-            아이디 또는 비밀번호가 잘못 되었습니다. 아이디와 비밀번호를 정확히 입력해 주세요.
-        </div>
-
 
         <div class="mb-4">
             <button type="submit" class="btn btn-primary w-100" style="padding: 10px;"> 로그인</button>

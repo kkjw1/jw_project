@@ -8,18 +8,9 @@ import lombok.Data;
 @Data
 public class Member {
     public Long memberNo;
-
-    @NotBlank
     public String memberId;
-
-    @NotBlank
     public String memberName;
-
-    @NotNull
-    @Size(min = 8)
     public String password;
-
-    @NotBlank
     public String address;
 
     public MemberLevel grade;

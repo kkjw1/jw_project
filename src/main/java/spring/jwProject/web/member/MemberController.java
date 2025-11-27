@@ -12,6 +12,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import spring.jwProject.domain.member.Member;
 import spring.jwProject.repository.member.MemberRepository;
 import spring.jwProject.sevice.MemberService;
+import spring.jwProject.validation.form.LoginMember;
+import spring.jwProject.validation.form.SignUpMember;
 
 import java.util.Optional;
 
@@ -39,14 +41,14 @@ public class MemberController {
 
     // 로그인
     @PostMapping("/login")
-    public String login(@ModelAttribute("member") Member member,
+    public String login(@Validated @ModelAttribute("member") LoginMember member,
                         BindingResult bindingResult) {
 
         Member login = service.login(member.getMemberId(), member.getPassword());
         log.info("login member={}",login);
 
         if (login == null) {
-            bindingResult.reject("loginError", null);
+            bindingResult.reject("loginError", "아이디 또는 비밀번호가 잘못 되었습니다. 아이디와 비밀번호를 정확히 입력해 주세요.");
         }
 
         if (bindingResult.hasErrors()) {
@@ -66,15 +68,15 @@ public class MemberController {
 
     //회원가입
     @PostMapping("/signup")
-    public String signUp(@Validated @ModelAttribute("member") Member member, BindingResult bindingResult,
+    public String signUp(@Validated @ModelAttribute("member") SignUpMember signUpMember, BindingResult bindingResult,
                          RedirectAttributes redirectAttributes, HttpServletResponse response) {
 
 
-        Member findMember = repository.findById(member.memberId).orElse(null);
+        Member findMember = repository.findById(signUpMember.memberId).orElse(null);
 
         if (findMember != null) {
             // 회원가입 실패인 경우
-            bindingResult.reject("signUpError", null);
+            bindingResult.reject("signUpError", "회원가입 실패");
         }
 
         if (bindingResult.hasErrors()) {
@@ -83,10 +85,13 @@ public class MemberController {
         }
 
 
-        Member signUpMember = service.signUp(member);
-        log.info("signUpMember={}",signUpMember);
+        Member member = new Member(signUpMember.getMemberId(),signUpMember.getMemberName(),
+                signUpMember.getPassword(), signUpMember.getAddress());
 
-        redirectAttributes.addAttribute("loginId", signUpMember.getMemberId());
+        Member signed = service.signUp(member);
+        log.info("signUpMember={}",signed);
+
+        redirectAttributes.addAttribute("loginId", signed.getMemberId());
         return "redirect:/login/{loginId}";
     }
 }
