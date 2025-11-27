@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>비밀번호 변경</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+    <style>
+        html, body {
+            height: 100%;
+        }
+        .pw-change-container {
+            /* 폼이 중앙에 배치되도록 최대 너비 설정 */
+            max-width: 450px;
+            padding: 30px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,.05);
+            background-color: #fff;
+            margin: 50px auto;
+        }
+    </style>
+</head>
+<body class="bg-light">
+
+<div class="container">
+    <div class="pw-change-container">
+        <h3 class="text-center mb-4">비밀번호 변경</h3>
+
+        <form th:action="@{/changePw(memberId=${param.memberId})}" th:object="${member}" method="post">
+
+            <small class="text-danger d-block mt-1" th:if="${#fields.hasGlobalErrors()}"
+                   th:each="err : ${#fields.globalErrors()}" th:text="${err}">비밀번호 변경 실패 메시지</small>
+
+            <div class="form-group mb-3">
+                <label for="password">새 비밀번호</label>
+                <input
+                        type="password"
+                        class="form-control"
+                        id ="password"
+                        th:field="*{password}"
+                >
+                <div class="text-danger" style="font-size: 0.875rem;" th:errors="*{password}">새 비밀번호 에러</div>
+            </div>
+
+            <div class="form-group mb-5">
+                <label for="confirmNewPassword">새 비밀번호 확인</label>
+                <input
+                        type="password"
+                        class="form-control"
+                        id="confirmNewPassword"
+                        th:field="*{password2}"
+                >
+                <div class="text-danger" style="font-size: 0.875rem;" th:errors="*{password2}">새 비밀번호 에러</div>
+            </div>
+
+            <div class="mb-3">
+                <button type="submit" class="btn btn-primary w-100" style="padding: 10px;">
+                    비밀번호 변경
+                </button>
+            </div>
+
+            <div class="text-center mt-4">
+                <a href="#" class="text-decoration-none text-secondary" th:href="@{/}">홈으로 돌아가기</a>
+            </div>
+
+        </form>
+    </div>
+</div>
+</body>
+</html>

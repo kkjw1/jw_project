@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>마이페이지</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+    <style>
+        html, body {
+            height: 100%;
+        }
+        .mypage-container {
+            /* 폼이 중앙에 배치되도록 최대 너비 설정 */
+            max-width: 600px;
+            padding: 30px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,.05);
+            background-color: #fff;
+            margin: 50px auto; /* 중앙 정렬 및 상하 여백 */
+        }
+        .form-control[readonly] {
+            background-color: #e9ecef; /* 읽기 전용 필드는 배경색을 다르게 표시 */
+        }
+
+        .input-error {
+            border-color: #dc3545;
+            color: #dc3545;
+        }
+
+    </style>
+</head>
+<body class="bg-light">
+
+<div class="container">
+    <div class="mypage-container">
+        <h3 class="text-center mb-5">내 정보 수정</h3>
+
+        <form th:action="@{/mypage}" method="post" th:object="${member}">
+
+            <div class="form-group mb-4">
+                <label for="memberId">아이디</label>
+                <input
+                        type="text"
+                        class="form-control"
+                        id="memberId" readonly
+                        aria-describedby="idHelp"
+                        th:field="*{memberId}"
+                        th:value="*{memberId}"
+                >
+                <small id="idHelp" class="form-text text-muted">아이디는 변경할 수 없습니다.</small>
+            </div>
+
+            <div class="form-group mb-4">
+                <label for="memberName">이름</label>
+                <input
+                        type="text"
+                        class="form-control"
+                        id="memberName"
+                        th:field="*{memberName}"
+                        th:value="*{memberName}"
+                        th:errorclass="input-error"
+                >
+                <div class="text-danger" style="font-size: 0.875rem;" th:errors="*{memberName}">이름 에러메시지</div>
+            </div>
+
+            <div class="form-group mb-5">
+                <label for="address">주소</label>
+                <input
+                        type="text"
+                        class="form-control"
+                        id="address"
+                        value="address"
+                        th:field="*{address}"
+                        th:value="*{address}"
+                        th:errorclass="input-error"
+                >
+                <div class="text-danger" style="font-size: 0.875rem;" th:errors="*{address}">주소 에러메시지</div>
+            </div>
+
+            <div class="mb-3">
+                <button type="submit" class="btn btn-primary w-100" style="padding: 10px;">
+                    정보 수정 완료
+                </button>
+            </div>
+        </form>
+        <hr class="my-4">
+
+        <div class="text-center">
+            <a class="btn btn-link" style="color: black" th:href="@{/home}">돌아가기</a>
+            <span class="text-muted mx-2">|</span>
+            <a class="btn btn-link" style="color: black" th:href="@{/changePw(memberId=${member.getMemberId()})}">비밀번호 변경</a>
+            <span class="text-muted mx-2">|</span>
+            <a class="btn btn-link text-danger" th:href="@{/delete(memberId=${member.getMemberId()})}">회원 탈퇴</a>
+        </div>
+
+    </div>
+</div>
+
+</body>
+</html>

@@ -14,8 +14,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import spring.jwProject.domain.member.Member;
 import spring.jwProject.repository.member.MemberRepository;
 import spring.jwProject.sevice.MemberService;
+import spring.jwProject.validation.form.ChangePwMember;
 import spring.jwProject.validation.form.LoginMember;
 import spring.jwProject.validation.form.SignUpMember;
+import spring.jwProject.validation.form.UpdateMember;
 import spring.jwProject.web.SessionConst;
 
 import java.util.Optional;
@@ -111,4 +113,66 @@ public class MemberController {
         redirectAttributes.addAttribute("loginId", signed.getMemberId());
         return "redirect:/login/{loginId}";
     }
+
+    //마이페이지
+    @GetMapping("/mypage")
+    public String myPageForm(@RequestParam("memberId") String memberId, Model model) {
+        Member member = repository.findById(memberId).orElse(null);
+        model.addAttribute("member", member);
+
+        return "member/mypage";
+    }
+
+    @PostMapping("/mypage")
+    public String myPageUpdate(@Validated @ModelAttribute("member") UpdateMember member, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "member/mypage";
+        }
+
+        Member updateMember = new Member(member.getMemberId(), member.getMemberName(), member.getPassword(), member.getAddress());
+        service.updateMember(updateMember);
+
+        return "redirect:/";
+    }
+
+
+    @GetMapping("/delete")
+    public String delete(@RequestParam("memberId") String memberId, HttpServletRequest request) {
+        log.info("delete member={}", memberId);
+        service.withdraw(memberId);
+        HttpSession session = request.getSession(false);
+        session.invalidate();
+
+        return "redirect:/";
+    }
+
+    //비밀번호 변경 페이지
+    @GetMapping("/changePw")
+    public String changePwForm(@RequestParam("memberId") String memberId, Model model) {
+        model.addAttribute("member", new ChangePwMember());
+        return "member/changePw";
+    }
+
+    //비밀번호 변경
+    @PostMapping("/changePw")
+    public String changePw(@RequestParam("memberId") String memberId,
+                           @Validated @ModelAttribute("member") ChangePwMember changePwMember, BindingResult bindingResult,
+                           RedirectAttributes redirectAttributes) {
+
+        if (bindingResult.hasErrors()) {
+            log.info("changePw Error={}", bindingResult);
+            return "member/changePw";
+        }
+
+        if (changePwMember.getPassword() != changePwMember.getPassword2()) {
+            bindingResult.reject("PwCrossCheckError", "새 비밀번호가 일치하지 않습니다.");
+            return "member/changePw";
+        }
+
+        Member member = repository.findById(memberId).orElse(null);
+        member.setPassword(changePwMember.getPassword());
+
+        return "redirect:/";
+    }
+
 }

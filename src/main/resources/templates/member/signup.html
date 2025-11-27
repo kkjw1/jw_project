@@ -34,7 +34,7 @@
     <form action="login.html" th:action="@{/signup}" method="post" th:object="${member}">
 
         <div class="text-danger mb-3" id="loginErrorMessage" style="font-size: 0.875rem;"
-        th:if="${#fields.hasGlobalErrors()}">
+        th:if="${#fields.hasGlobalErrors()}" th:each="err : ${#fields.globalErrors()}" th:text="${err}">
             회원가입 실패
         </div>
 
