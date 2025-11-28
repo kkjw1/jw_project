@@ -7,6 +7,7 @@ import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.HandlerMapping;
 import org.springframework.web.servlet.ModelAndView;
+import spring.jwProject.web.SessionConst;
 
 public class LoginCheckInterceptor  implements HandlerInterceptor {
 
@@ -16,20 +17,13 @@ public class LoginCheckInterceptor  implements HandlerInterceptor {
         //@Controller @RequestMapping
         if (handler instanceof HandlerMethod) {
             HttpSession session = request.getSession(false);
+            if (session == null || session.getAttribute(SessionConst.LOGIN_MEMBER) == null) {
+                response.sendRedirect("/member/login?redirectURL=" + request.getRequestURI());
+                return false;
+            }
         }
 
-
-
+        //정적 리소스
         return true;
-    }
-
-    @Override
-    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
-        HandlerInterceptor.super.postHandle(request, response, handler, modelAndView);
-    }
-
-    @Override
-    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
-        HandlerInterceptor.super.afterCompletion(request, response, handler, ex);
     }
 }
