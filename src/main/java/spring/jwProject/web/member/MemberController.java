@@ -34,13 +34,13 @@ public class MemberController {
 
     // 로그인 페이지
     @GetMapping("/login")
-    public String loginPage(Model model) {
+    public String loginForm(Model model) {
         model.addAttribute("member", new Member());
         return "member/login";
     }
 
     @GetMapping("/login/{loginId}")
-    public String loginPage2(@PathVariable("loginId") String loginId, Model model) {
+    public String loginForm2(@PathVariable("loginId") String loginId, Model model) {
         Member signUpMember = repository.findById(loginId).orElse(null);
         model.addAttribute("member", signUpMember);
         return "member/login";
@@ -60,7 +60,7 @@ public class MemberController {
         log.info("login member={}",login);
 
         if (login == null) {
-            bindingResult.reject("loginError", "아이디 또는 비밀번호가 잘못 되었습니다. 아이디와 비밀번호를 정확히 입력해 주세요.");
+            bindingResult.reject("loginError", "로그인 에러메시지");
             return "member/login";
         }
 
@@ -80,7 +80,7 @@ public class MemberController {
 
     //회원가입 페이지
     @GetMapping("/signup")
-    public String signUpPage(Model model) {
+    public String signUpForm(Model model) {
         model.addAttribute("member", new Member());
         return "member/signup";
     }
@@ -95,7 +95,7 @@ public class MemberController {
 
         if (findMember != null) {
             // 회원가입 실패인 경우
-            bindingResult.reject("signUpError", "회원가입 실패");
+            bindingResult.reject("signUpError", "회원가입 실패 메시지");
         }
 
         if (bindingResult.hasErrors()) {
@@ -165,7 +165,8 @@ public class MemberController {
         }
 
         if (changePwMember.getPassword() != changePwMember.getPassword2()) {
-            bindingResult.reject("PwCrossCheckError", "새 비밀번호가 일치하지 않습니다.");
+            bindingResult.reject("PwCrossCheckError", "비밀번호 불일치 에러메시지");
+            log.info("changePw Error={}", bindingResult);
             return "member/changePw";
         }
 
