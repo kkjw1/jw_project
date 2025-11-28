@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>비밀번호 변경</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
 
     <style>
         html, body {
@@ -28,7 +28,7 @@
     <div class="pw-change-container">
         <h3 class="text-center mb-4">비밀번호 변경</h3>
 
-        <form th:action="@{/changePw(memberId=${param.memberId})}" th:object="${member}" method="post">
+        <form th:action="@{/member/changePw(memberId=${param.memberId})}" th:object="${member}" method="post">
 
             <small class="text-danger d-block mt-1" th:if="${#fields.hasGlobalErrors()}"
                    th:each="err : ${#fields.globalErrors()}" th:text="${err}">비밀번호 변경 실패 메시지</small>

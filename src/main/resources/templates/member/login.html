@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>로그인 페이지</title>
-    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
     <style>
         /* body 높이를 뷰포트 전체로 설정하고 Flexbox를 사용하여 내용을 수직/수평 중앙에 배치 */
         html, body {
@@ -39,7 +39,7 @@
 <div class="login-container">
     <h3 class="text-center mb-4">로그인</h3>
 
-    <form action="signup.html" th:action="@{/login}" th:object="${member}" method="post">
+    <form action="signup.html" th:action="@{/member/login}" th:object="${member}" method="post">
         <div th:if="${#fields.hasGlobalErrors()}">
             <div class="text-danger mb-3" id="loginErrorMessage" style="font-size: 0.875rem;"
                  th:each="error : ${#fields.globalErrors()}" th:text="${error}">
@@ -76,7 +76,7 @@
             <span class="text-muted mx-2">|</span>
 
             <a href="#" onclick="location.href='signup.html'" class="text-decoration-none text-dark"
-               th:onclick="|location.href='@{/signup}'|">회원가입</a>
+               th:onclick="|location.href='@{/member/signup}'|">회원가입</a>
         </div>
     </form>
 </div>

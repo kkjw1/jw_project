@@ -8,7 +8,6 @@ import spring.jwProject.domain.member.MemberLevel;
 
 @Data
 public class SignUpMember {
-    public Long memberNo;
 
     @NotBlank(message = "아이디가 공백입니다.")
     public String memberId;

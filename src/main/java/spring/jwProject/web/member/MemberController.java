@@ -24,9 +24,10 @@ import java.util.Optional;
 
 import static spring.jwProject.web.SessionConst.LOGIN_MEMBER;
 
+@Slf4j
 @Controller
 @RequiredArgsConstructor
-@Slf4j
+@RequestMapping("/member")
 public class MemberController {
 
     private final MemberService service;
@@ -35,14 +36,13 @@ public class MemberController {
     // 로그인 페이지
     @GetMapping("/login")
     public String loginForm(Model model) {
-        model.addAttribute("member", new Member());
+        model.addAttribute("member", new LoginMember());
         return "member/login";
     }
 
     @GetMapping("/login/{loginId}")
     public String loginForm2(@PathVariable("loginId") String loginId, Model model) {
-        Member signUpMember = repository.findById(loginId).orElse(null);
-        model.addAttribute("member", signUpMember);
+        model.addAttribute("member", new LoginMember(loginId));
         return "member/login";
     }
 
@@ -111,7 +111,7 @@ public class MemberController {
         log.info("signUpMember={}",signed);
 
         redirectAttributes.addAttribute("loginId", signed.getMemberId());
-        return "redirect:/login/{loginId}";
+        return "redirect:/member/login/{loginId}";
     }
 
     //마이페이지
@@ -124,13 +124,17 @@ public class MemberController {
     }
 
     @PostMapping("/mypage")
-    public String myPageUpdate(@Validated @ModelAttribute("member") UpdateMember member, BindingResult bindingResult) {
+    public String myPageUpdate(@Validated @ModelAttribute("member") UpdateMember updateMember, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
+            log.info("myPageUpdate Fail={}", bindingResult);
             return "member/mypage";
         }
 
-        Member updateMember = new Member(member.getMemberId(), member.getMemberName(), member.getPassword(), member.getAddress());
-        service.updateMember(updateMember);
+        Member member = repository.findById(updateMember.getMemberId()).orElse(null);
+        member.setMemberName(updateMember.getMemberName());
+        member.setAddress(updateMember.getAddress());
+
+        service.updateMember(member);
 
         return "redirect:/";
     }
@@ -156,15 +160,15 @@ public class MemberController {
     //비밀번호 변경
     @PostMapping("/changePw")
     public String changePw(@RequestParam("memberId") String memberId,
-                           @Validated @ModelAttribute("member") ChangePwMember changePwMember, BindingResult bindingResult,
-                           RedirectAttributes redirectAttributes) {
+                           @Validated @ModelAttribute("member") ChangePwMember changePwMember, BindingResult bindingResult) {
 
         if (bindingResult.hasErrors()) {
             log.info("changePw Error={}", bindingResult);
             return "member/changePw";
         }
 
-        if (changePwMember.getPassword() != changePwMember.getPassword2()) {
+        if (!changePwMember.getPassword().equals(changePwMember.getPassword2())) {
+            log.info("password={} password2={}", changePwMember.getPassword(), changePwMember.getPassword2());
             bindingResult.reject("PwCrossCheckError", "비밀번호 불일치 에러메시지");
             log.info("changePw Error={}", bindingResult);
             return "member/changePw";
@@ -172,6 +176,7 @@ public class MemberController {
 
         Member member = repository.findById(memberId).orElse(null);
         member.setPassword(changePwMember.getPassword());
+        service.updateMember(member);
 
         return "redirect:/";
     }
