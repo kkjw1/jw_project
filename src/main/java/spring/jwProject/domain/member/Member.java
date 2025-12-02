@@ -1,8 +1,5 @@
 package spring.jwProject.domain.member;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 @Data
@@ -11,9 +8,14 @@ public class Member {
     public String memberId;
     public String memberName;
     public String password;
-    public String address;
-
     public MemberLevel grade;
+
+
+    public String postcode;
+    public String roadAddress;
+    public String jibunAddress;
+    public String detailAddress;
+    public String extraAddress;
 
     public Member() {
     }
@@ -22,14 +24,12 @@ public class Member {
         this.memberId = memberId;
         this.memberName = memberName;
         this.password = password;
-        this.address = address;
     }
 
-    public Member(String memberId, String memberName, String password, String address, MemberLevel grade) {
+    public Member(String memberId, String memberName, String password, MemberLevel grade) {
         this.memberId = memberId;
         this.memberName = memberName;
         this.password = password;
-        this.address = address;
         this.grade = grade;
     }
 }

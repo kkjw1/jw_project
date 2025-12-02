@@ -12,8 +12,12 @@ public class UpdateMember {
     @NotBlank(message = "이름이 공백입니다.")
     public String memberName;
 
-    @NotBlank(message = "주소가 공백입니다.")
-    public String address;
+    public String postcode;
+
+    public String roadAddress;
+    public String jibunAddress;
+    public String detailAddress;
+    public String extraAddress;
 
 
     public UpdateMember() {

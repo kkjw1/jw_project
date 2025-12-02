@@ -104,8 +104,17 @@ public class MemberController {
         }
 
 
-        Member member = new Member(signUpMember.getMemberId(),signUpMember.getMemberName(),
-                signUpMember.getPassword(), signUpMember.getAddress());
+        Member member = new Member();
+        member.setMemberId(signUpMember.getMemberId());
+        member.setMemberName(signUpMember.getMemberName());
+        member.setPassword(signUpMember.getPassword());
+
+        member.setPostcode(signUpMember.getPostcode());
+        member.setDetailAddress(signUpMember.getDetailAddress());
+        member.setExtraAddress(signUpMember.getExtraAddress());
+        member.setRoadAddress(signUpMember.getRoadAddress());
+        member.setJibunAddress(signUpMember.getJibunAddress());
+
 
         Member signed = service.signUp(member);
         log.info("signUpMember={}",signed);
@@ -132,7 +141,12 @@ public class MemberController {
 
         Member member = repository.findById(updateMember.getMemberId()).orElse(null);
         member.setMemberName(updateMember.getMemberName());
-        member.setAddress(updateMember.getAddress());
+
+        member.setPostcode(updateMember.getPostcode());
+        member.setDetailAddress(updateMember.getDetailAddress());
+        member.setExtraAddress(updateMember.getExtraAddress());
+        member.setRoadAddress(updateMember.getRoadAddress());
+        member.setJibunAddress(updateMember.getJibunAddress());
 
         service.updateMember(member);
 

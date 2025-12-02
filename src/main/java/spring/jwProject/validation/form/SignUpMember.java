@@ -19,26 +19,16 @@ public class SignUpMember {
     @Size(min = 8, message = "비밀번호는 8자리 이상이여야 합니다.")
     public String password;
 
-    @NotBlank(message = "주소가 공백입니다.")
-    public String address;
+    @NotBlank(message = "우편번호가 공백입니다.")
+    public String postcode;
 
+    public String roadAddress;
+    public String jibunAddress;
+    public String detailAddress;
+    public String extraAddress;
     public MemberLevel grade;
 
     public SignUpMember() {
-    }
 
-    public SignUpMember(String memberId, String memberName, String password, String address) {
-        this.memberId = memberId;
-        this.memberName = memberName;
-        this.password = password;
-        this.address = address;
-    }
-
-    public SignUpMember(String memberId, String memberName, String password, String address, MemberLevel grade) {
-        this.memberId = memberId;
-        this.memberName = memberName;
-        this.password = password;
-        this.address = address;
-        this.grade = grade;
     }
 }
