@@ -17,17 +17,18 @@ public class SellerController {
     public final SellerRepository repository;
     public SellerService service;
 
+    //회원가입 페이지
     @GetMapping("/signup")
     public String signUpForm() {
         return "seller/signup";
     }
 
-
+    //회원가입
     @PostMapping("/signup")
     public String signUp(@RequestParam("sellerNo") String sellerNo) {
         Seller seller = new Seller();
         seller.setSellerNo(Long.parseLong(sellerNo));
         Seller signUpSeller = service.signUp(seller);
-        return "home/sellerhome";
+        return "seller/sellerhome";
     }
 }
