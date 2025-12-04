@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>판매자 회원가입 페이지</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+
+    <style>
+        html, body {
+            height: 100%;
+        }
+        .register-container {
+            /* 판매자는 일반 회원보다 입력 필드가 많으므로 너비를 550px로 확장 */
+            max-width: 550px;
+            padding: 30px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,.05);
+            background-color: #fff;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+        .input-error {
+            border-color: #dc3545 !important; /* Bootstrap input-error와 충돌 방지 */
+            color: #dc3545;
+        }
+        fieldset {
+            border: 1px solid #e9ecef;
+            padding: 20px;
+            margin-bottom: 25px;
+            border-radius: 6px;
+        }
+        legend {
+            width: auto;
+            padding: 0 10px;
+            font-size: 1.1em;
+            color: #007bff;
+        }
+    </style>
+</head>
+<body class="d-flex justify-content-center align-items-center bg-light">
+
+<div class="register-container">
+    <h3 class="text-center mb-4">🛍️ 판매자 회원가입</h3>
+    <p class="text-center text-muted mb-4" style="font-size: 0.95rem;">
+        계정 정보와 비즈니스 정보를 입력하여 판매자 활동을 시작하세요.
+    </p>
+
+    <form action="seller-login.html" th:action="@{/seller/signup(sellerId=${param.})}" method="post" th:object="${member}">
+
+<!--        <div class="alert alert-danger mb-3" role="alert" style="font-size: 0.875rem;"
+             th:if="${#fields.hasGlobalErrors()}" th:each="err : ${#fields.globalErrors()}" th:text="${err}">
+            회원가입 실패
+        </div>-->
+
+        <fieldset>
+            <legend>👤 계정 정보</legend>
+
+            <div class="form-group">
+                <label for="sellerEmail">이메일 (ID)</label>
+                <input
+                        type="email"
+                        class="form-control"
+                        id="sellerEmail"
+                        placeholder="example@company.com"
+                >
+<!--                <div class="text-danger" style="font-size: 0.875rem;" th:errors="*{sellerEmail}">
+                    이메일 에러
+                </div>-->
+            </div>
+
+            <div class="form-group">
+                <label for="password">비밀번호</label>
+                <input
+                        type="password"
+                        class="form-control"
+                        id="password"
+                        placeholder="최소 8자 이상의 비밀번호"
+                >
+ <!--               <div class="text-danger" style="font-size: 0.875rem;" th:errors="*{password}">
+                    비밀번호 에러
+                </div>-->
+            </div>
+
+            <div class="form-group">
+                <label for="sellerName">담당자 이름</label>
+                <input
+                        type="text"
+                        class="form-control"
+                        id="sellerName"
+                        placeholder="홍길동"
+                >
+  <!--              <div class="text-danger" style="font-size: 0.875rem;" th:errors="*{sellerName}">
+                    이름 에러
+                </div>-->
+            </div>
+        </fieldset>
+
+        <fieldset>
+            <legend>🏢 비즈니스 정보</legend>
+
+            <div class="form-group">
+                <label for="companyName">회사/상호명</label>
+                <input
+                        type="text"
+                        class="form-control"
+                        id="companyName"
+                        placeholder="OO 주식회사 또는 상호명"
+                >
+<!--                <div class="text-danger" style="font-size: 0.875rem;" th:errors="*{companyName}">
+                    회사명 에러
+                </div>-->
+            </div>
+
+            <div class="form-group">
+                <label for="businessNumber">사업자 등록번호</label>
+                <input
+                        type="text"
+                        class="form-control"
+                        id="businessNumber"
+                        placeholder="000-00-00000"
+                >
+ <!--               <div class="text-danger" style="font-size: 0.875rem;" th:errors="*{businessNumber}">
+                    사업자 등록번호 에러
+                </div>-->
+            </div>
+
+            <div class="form-group">
+                <label for="mainCategory">주요 판매 품목</label>
+                <select id="mainCategory" class="form-control">
+                    <option value="">선택하세요</option>
+                    <option value="fashion">패션/의류</option>
+                    <option value="food">식품/건강</option>
+                    <option value="digital">가전/디지털</option>
+                    <option value="living">생활/주방</option>
+                    <option value="etc">기타</option>
+                </select>
+<!--                <div class="text-danger" style="font-size: 0.875rem;" th:errors="*{mainCategory}">
+                    카테고리 에러
+                </div>-->
+            </div>
+        </fieldset>
+
+        <div class="form-group form-check mb-4 mt-3">
+            <input type="checkbox" class="form-check-input" id="termsAgree">
+            <label class="form-check-label" for="termsAgree">
+                <a href="#" class="text-primary text-decoration-none">판매자 이용약관 및 개인정보 처리방침</a>에 동의합니다.
+            </label>
+        </div>
+
+        <div class="mb-3">
+            <button type="submit" class="btn btn-success w-100" style="padding: 10px;">
+                판매자 가입 완료
+            </button>
+        </div>
+
+        <hr>
+
+        <div class="text-center mt-3">
+            이미 계정이 있으신가요?
+            <a href="#" onclick="location.href='seller-login.html'" class="text-decoration-none text-primary"
+               th:onclick="|location.href='@{/seller/login}'|">판매자 로그인</a>
+        </div>
+    </form>
+</div>
+
+</body>
+</html>
