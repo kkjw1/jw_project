@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>상품 관리 | 판매자 센터</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <style>
+        /* 사용자 지정 스타일 (대시보드와 동일하게 유지) */
+        body {
+            background-color: #f8f9fa;
+        }
+        .sidebar {
+            background-color: #2c3e50;
+            min-height: 100vh;
+            color: white;
+            padding-top: 20px;
+        }
+        .sidebar .nav-link {
+            color: #ecf0f1;
+            padding: 15px 20px;
+            font-size: 1.1rem;
+            transition: background-color 0.3s;
+        }
+        .sidebar .nav-link.active,
+        .sidebar .nav-link:hover {
+            background-color: #34495e;
+            border-left: 5px solid #3498db;
+            color: white;
+        }
+        /* 현재 활성화된 페이지를 위한 스타일 */
+        .sidebar .nav-link.product-active {
+            background-color: #34495e;
+            border-left: 5px solid #3498db;
+            color: white;
+        }
+        /* 테이블 내 이미지 스타일 */
+        .product-thumb {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="d-flex">
+    <div class="sidebar d-none d-md-block" style="width: 250px;">
+        <h3 class="text-center mb-4 text-white">📦 판매자 센터</h3>
+        <nav class="nav flex-column">
+            <a class="nav-link" href="dashboard.html"><i class="fas fa-tachometer-alt me-2"></i> 대시보드</a>
+            <a class="nav-link product-active" href="product-management.html"><i class="fas fa-box me-2"></i> **상품 관리**</a>
+            <a class="nav-link" href="#"><i class="fas fa-shopping-cart me-2"></i> 주문/배송</a>
+            <a class="nav-link" href="#"><i class="fas fa-chart-line me-2"></i> 정산/통계</a>
+            <a class="nav-link" href="#"><i class="fas fa-comment-dots me-2"></i> 고객 문의</a>
+            <a class="nav-link" href="#"><i class="fas fa-sign-out-alt me-2"></i> 로그아웃</a>
+        </nav>
+    </div>
+
+    <div id="page-content-wrapper" class="flex-grow-1 p-4">
+        <header class="mb-4 d-flex justify-content-between align-items-center border-bottom pb-3">
+            <h1 class="h3 mb-0 text-dark"><i class="fas fa-box me-2"></i> 상품 관리</h1>
+            <button class="btn btn-primary btn-lg" type="button">
+                <i class="fas fa-plus me-1"></i> 새 상품 등록
+            </button>
+        </header>
+
+        <div class="card shadow-sm mb-4">
+            <div class="card-body">
+                <form class="row g-3 align-items-center">
+                    <div class="col-md-3">
+                        <label for="searchType" class="form-label visually-hidden">검색 구분</label>
+                        <select id="searchType" class="form-select">
+                            <option selected>상품명</option>
+                            <option>상품코드</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="searchInput" class="form-label visually-hidden">검색어</label>
+                        <input type="text" class="form-control" id="searchInput" placeholder="검색어를 입력하세요">
+                    </div>
+                    <div class="col-md-3">
+                        <label for="statusFilter" class="form-label visually-hidden">판매 상태</label>
+                        <select id="statusFilter" class="form-select">
+                            <option selected>전체 판매 상태</option>
+                            <option>판매 중</option>
+                            <option>판매 중지</option>
+                            <option>품절</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <button type="submit" class="btn btn-dark w-100"><i class="fas fa-search me-1"></i> 검색</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="card shadow-sm">
+            <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">총 등록 상품: 50개</h5>
+                <button class="btn btn-sm btn-outline-secondary" type="button"><i class="fas fa-undo-alt me-1"></i> 일괄 수정</button>
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0">
+                        <thead class="table-light">
+                        <tr>
+                            <th style="width: 20px;"><input class="form-check-input" type="checkbox"></th>
+                            <th style="width: 80px;">이미지</th>
+                            <th>상품 정보</th>
+                            <th style="width: 100px;">판매가</th>
+                            <th style="width: 80px;">재고</th>
+                            <th style="width: 100px;">판매 상태</th>
+                            <th style="width: 100px;">등록일</th>
+                            <th style="width: 100px;">관리</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td><input class="form-check-input" type="checkbox"></td>
+                            <td><img src="placeholder-image-1.jpg" alt="상품 썸네일" class="product-thumb border"></td>
+                            <td>
+                                <strong class="d-block">프리미엄 와이드 팬츠</strong>
+                                <small class="text-muted">CODE: PT1001</small>
+                            </td>
+                            <td>39,000원</td>
+                            <td><span class="badge bg-warning text-dark">5개</span></td>
+                            <td><span class="badge bg-success">판매 중</span></td>
+                            <td>2024-05-01</td>
+                            <td>
+                                <button class="btn btn-sm btn-outline-primary me-1" title="수정"><i class="fas fa-edit"></i></button>
+                                <button class="btn btn-sm btn-outline-danger" title="삭제"><i class="fas fa-trash-alt"></i></button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><input class="form-check-input" type="checkbox"></td>
+                            <td><img src="placeholder-image-2.jpg" alt="상품 썸네일" class="product-thumb border"></td>
+                            <td>
+                                <strong class="d-block">모던 심플 셔츠 (블랙)</strong>
+                                <small class="text-muted">CODE: SH2005</small>
+                            </td>
+                            <td>29,000원</td>
+                            <td><span class="badge bg-info text-dark">150개</span></td>
+                            <td><span class="badge bg-danger">판매 중지</span></td>
+                            <td>2024-06-10</td>
+                            <td>
+                                <button class="btn btn-sm btn-outline-primary me-1"><i class="fas fa-edit"></i></button>
+                                <button class="btn btn-sm btn-outline-danger"><i class="fas fa-trash-alt"></i></button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="card-footer bg-white">
+                <nav aria-label="Page navigation">
+                    <ul class="pagination justify-content-center mb-0">
+                        <li class="page-item disabled"><a class="page-link" href="#">이전</a></li>
+                        <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                        <li class="page-item"><a class="page-link" href="#">2</a></li>
+                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                        <li class="page-item"><a class="page-link" href="#">다음</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+</body>
+</html>
