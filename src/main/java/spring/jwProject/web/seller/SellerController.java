@@ -29,6 +29,6 @@ public class SellerController {
         Seller seller = new Seller();
         seller.setSellerNo(Long.parseLong(sellerNo));
         Seller signUpSeller = service.signUp(seller);
-        return "seller/sellerhome";
+        return "home";
     }
 }
