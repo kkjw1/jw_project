@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import spring.jwProject.domain.member.Member;
+import spring.jwProject.repository.member.MemberRepository;
 import spring.jwProject.repository.member.MemoryMemberRepository;
 
 import static spring.jwProject.web.SessionConst.LOGIN_MEMBER;

@@ -1,6 +1,6 @@
 package spring.jwProject.repository.member;
 
-import spring.jwProject.domain.member.Member;
+import spring.jwProject.domain.BeforeMember;
 
 import java.util.Optional;
 
@@ -11,14 +11,14 @@ public interface MemberRepository {
      * @param member
      * @return 저장한 회원 정보
      */
-    Member save(Member member);
+    BeforeMember save(BeforeMember member);
 
     /**
      * 회원정보 수정
      * @param member
      * @return 수정한 회원 정보
      */
-    Member update(Member member);
+    BeforeMember update(BeforeMember member);
 
 
     /**
@@ -33,5 +33,5 @@ public interface MemberRepository {
      * @param memberId
      * @return 회원 아이디
      */
-    Optional<Member> findById(String memberId);
+    Optional<BeforeMember> findById(String memberId);
 }

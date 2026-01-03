@@ -1,5 +1,5 @@
 package spring.jwProject.domain.member;
 
-public enum MemberLevel {
-    NORMAL, VIP
+public enum Gender {
+    MAN, WOMAN
 }

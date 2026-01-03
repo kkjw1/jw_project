@@ -1,12 +1,12 @@
 package spring.jwProject.repository.seller;
 
-import spring.jwProject.domain.member.Member;
+import spring.jwProject.domain.BeforeMember;
 import spring.jwProject.domain.seller.Seller;
 
 public interface SellerRepository {
     /**
      * 판매자 가입
-     * @param member 회원
+     * @param BeforeMember 회원
      * @return Seller
      */
     Seller save(Seller seller);

@@ -11,6 +11,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import spring.jwProject.domain.BeforeMember;
 import spring.jwProject.domain.member.Member;
 import spring.jwProject.repository.member.MemberRepository;
 import spring.jwProject.sevice.MemberService;
@@ -56,7 +57,7 @@ public class MemberController {
             return "member/login";
         }
 
-        Member login = service.login(member.getMemberId(), member.getPassword());
+        BeforeMember login = service.login(member.getMemberId(), member.getPassword());
         log.info("login member={}",login);
 
         if (login == null) {
@@ -91,7 +92,7 @@ public class MemberController {
                          RedirectAttributes redirectAttributes, HttpServletResponse response) {
 
 
-        Member findMember = repository.findById(signUpMember.memberId).orElse(null);
+        BeforeMember findMember = repository.findById(signUpMember.memberId).orElse(null);
 
         if (findMember != null) {
             // 회원가입 실패인 경우
@@ -104,7 +105,7 @@ public class MemberController {
         }
 
 
-        Member member = new Member();
+        BeforeMember member = new BeforeMember();
         member.setMemberId(signUpMember.getMemberId());
         member.setMemberName(signUpMember.getMemberName());
         member.setPassword(signUpMember.getPassword());
@@ -116,7 +117,7 @@ public class MemberController {
         member.setJibunAddress(signUpMember.getJibunAddress());
 
 
-        Member signed = service.signUp(member);
+        BeforeMember signed = service.signUp(member);
         log.info("signUpMember={}",signed);
 
         redirectAttributes.addAttribute("loginId", signed.getMemberId());
@@ -126,7 +127,7 @@ public class MemberController {
     //마이페이지
     @GetMapping("/mypage")
     public String myPageForm(@RequestParam("memberId") String memberId, Model model) {
-        Member member = repository.findById(memberId).orElse(null);
+        BeforeMember member = repository.findById(memberId).orElse(null);
         model.addAttribute("member", member);
 
         return "member/mypage";
@@ -139,7 +140,7 @@ public class MemberController {
             return "member/mypage";
         }
 
-        Member member = repository.findById(updateMember.getMemberId()).orElse(null);
+        BeforeMember member = repository.findById(updateMember.getMemberId()).orElse(null);
         member.setMemberName(updateMember.getMemberName());
 
         member.setPostcode(updateMember.getPostcode());
@@ -188,7 +189,7 @@ public class MemberController {
             return "member/changePw";
         }
 
-        Member member = repository.findById(memberId).orElse(null);
+        BeforeMember member = repository.findById(memberId).orElse(null);
         member.setPassword(changePwMember.getPassword());
         service.updateMember(member);
 

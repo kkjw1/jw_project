@@ -1,20 +1,33 @@
 package spring.jwProject.domain.seller;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
 import lombok.Data;
+import lombok.Getter;
+import spring.jwProject.domain.BaseEntity;
+import spring.jwProject.domain.member.Gender;
 import spring.jwProject.domain.member.MemberLevel;
 
-@Data
-public class Seller {
-    public Long sellerNo;
-    public String memberId;
-    public String memberName;
-    public String password;
-    public MemberLevel grade;
+@Entity
+@Getter
+public class Seller extends BaseEntity {
+    @Id
+    @GeneratedValue
+    @Column(name = "SELLER_ID")
+    private Long id;
 
+    private String password;
+    private String email;
+    private String name;
+    private String phoneNumber;
 
-    public String postcode;
-    public String roadAddress;
-    public String jibunAddress;
-    public String detailAddress;
-    public String extraAddress;
+    private String companyName;
+    private String companyPhone;
+
+    private String postcode;
+    private String roadAddress;
+    private String detailAddress;
+
 }

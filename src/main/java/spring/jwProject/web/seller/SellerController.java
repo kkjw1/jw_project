@@ -27,7 +27,7 @@ public class SellerController {
     @PostMapping("/signup")
     public String signUp(@RequestParam("sellerNo") String sellerNo) {
         Seller seller = new Seller();
-        seller.setSellerNo(Long.parseLong(sellerNo));
+//        seller.setSellerNo(Long.parseLong(sellerNo));
         Seller signUpSeller = service.signUp(seller);
         return "home";
     }

@@ -1,35 +1,48 @@
 package spring.jwProject.domain.member;
 
-import lombok.Data;
+import jakarta.persistence.*;
+import lombok.Getter;
+import spring.jwProject.domain.BaseEntity;
 
-@Data
-public class Member {
-    public Long memberNo;
-    public String memberId;
-    public String memberName;
-    public String password;
-    public MemberLevel grade;
+@Entity
+@Getter
+public class Member extends BaseEntity {
+    @Id
+    @GeneratedValue
+    @Column(name = "MEMBER_ID")
+    private Long id;
 
+    private String email;
+    private String password;
+    private String name;
 
-    public String postcode;
-    public String roadAddress;
-    public String jibunAddress;
-    public String detailAddress;
-    public String extraAddress;
+    @Enumerated(EnumType.STRING)
+    private Gender gender;
+
+    private String telecom;
+    private String phoneNumber;
+
+    private String postcode;
+    private String roadAddress;
+    private String detailAddress;
+
+    @Enumerated(EnumType.STRING)
+    private MemberLevel level;
+
 
     public Member() {
     }
 
-    public Member(String memberId, String memberName, String password, String address) {
-        this.memberId = memberId;
-        this.memberName = memberName;
+    public Member(String email, String password, String name, Gender gender, String telecom, String phoneNumber, String postcode, String roadAddress, String detailAddress, MemberLevel level) {
+        this.email = email;
         this.password = password;
-    }
-
-    public Member(String memberId, String memberName, String password, MemberLevel grade) {
-        this.memberId = memberId;
-        this.memberName = memberName;
-        this.password = password;
-        this.grade = grade;
+        this.name = name;
+        this.gender = gender;
+        this.telecom = telecom;
+        this.phoneNumber = phoneNumber;
+        this.postcode = postcode;
+        this.roadAddress = roadAddress;
+        this.detailAddress = detailAddress;
+        this.level = level;
     }
 }
