@@ -25,6 +25,15 @@ public class MemberService {
     }
 
     /**
+     * 아이디 중복 검사
+     * @return 중복아니면 true, 중복이면 false
+     */
+    public boolean checkId(String id) {
+        return repository.findById(id) == null;
+    }
+
+
+    /**
      * 회원 탈퇴
      * @param memberId
      */

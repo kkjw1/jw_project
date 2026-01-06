@@ -28,9 +28,8 @@ import spring.jwProject.web.SessionConst;
 public class MemberController {
 
     private final MemberService service;
-//    private final MemberRepository repository;
-
-/*    // 로그인 페이지
+    private final MemberRepository repository;
+    // 로그인 페이지
     @GetMapping("/login")
     public String loginForm(Model model) {
         model.addAttribute("member", new LoginMember());
@@ -82,13 +81,14 @@ public class MemberController {
         return "member/signup";
     }
 
+/*
+
     //회원가입
     @PostMapping("/signup")
     public String signUp(@Validated @ModelAttribute("member") SignUpMember signUpMember, BindingResult bindingResult,
                          RedirectAttributes redirectAttributes, HttpServletResponse response) {
 
-
-        BeforeMember findMember = repository.findById(signUpMember.memberId).orElse(null);
+        Member findMember = repository.findById(signUpMember.getMemberId());
 
         if (findMember != null) {
             // 회원가입 실패인 경우
@@ -119,7 +119,9 @@ public class MemberController {
         redirectAttributes.addAttribute("loginId", signed.getMemberId());
         return "redirect:/member/login/{loginId}";
     }
+*/
 
+/*
     //마이페이지
     @GetMapping("/mypage")
     public String myPageForm(@RequestParam("memberId") String memberId, Model model) {

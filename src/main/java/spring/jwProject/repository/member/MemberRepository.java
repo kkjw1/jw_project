@@ -12,8 +12,8 @@ public interface MemberRepository {
     Member save(Member member);
 
     /**
-     * 아이디 중복 체크
+     * 회원 검색
      * @return 중복X = true
      */
-    boolean checkId(String id);
+    Member findById(String id);
 }
