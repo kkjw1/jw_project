@@ -9,11 +9,11 @@ import spring.jwProject.domain.order.Order;
 @Getter
 public class Delivery extends BaseEntity {
     @Id @GeneratedValue
-    @Column(name = "DELIVERY_ID")
-    private Long id;
+    @Column(name = "DELIVERY_NO")
+    private Long no;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ORDER_ID")
+    @JoinColumn(name = "ORDER_NO")
     private Order order;
 
     private String courier;

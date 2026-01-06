@@ -9,9 +9,10 @@ import spring.jwProject.domain.BaseEntity;
 public class Member extends BaseEntity {
     @Id
     @GeneratedValue
-    @Column(name = "MEMBER_ID")
-    private Long id;
+    @Column(name = "MEMBER_NO")
+    private Long no;
 
+    private String id;
     private String email;
     private String password;
     private String name;
@@ -33,7 +34,8 @@ public class Member extends BaseEntity {
     public Member() {
     }
 
-    public Member(String email, String password, String name, Gender gender, String telecom, String phoneNumber, String postcode, String roadAddress, String detailAddress, MemberLevel level) {
+    public Member(String id, String email, String password, String name, Gender gender, String telecom, String phoneNumber, String postcode, String roadAddress, String detailAddress, MemberLevel level) {
+        this.id = id;
         this.email = email;
         this.password = password;
         this.name = name;

@@ -8,11 +8,11 @@ import spring.jwProject.domain.BaseEntity;
 @Getter
 public class InquiryAnswer extends BaseEntity {
     @Id @GeneratedValue
-    @Column(name = "INQUIRY_ANSWER_ID")
-    private Long id;
+    @Column(name = "INQUIRY_ANSWER_NO")
+    private Long no;
 
     @ManyToOne
-    @JoinColumn(name = "ITEM_INQUIEY_ID")
+    @JoinColumn(name = "ITEM_INQUIEY_NO")
     private ItemInquiry itemInquiry;
     private String content;
 }

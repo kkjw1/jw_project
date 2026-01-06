@@ -6,7 +6,7 @@ import spring.jwProject.domain.seller.Seller;
 public interface SellerRepository {
     /**
      * 판매자 가입
-     * @param BeforeMember 회원
+     * @param
      * @return Seller
      */
     Seller save(Seller seller);

@@ -21,10 +21,6 @@ import spring.jwProject.validation.form.SignUpMember;
 import spring.jwProject.validation.form.UpdateMember;
 import spring.jwProject.web.SessionConst;
 
-import java.util.Optional;
-
-import static spring.jwProject.web.SessionConst.LOGIN_MEMBER;
-
 @Slf4j
 @Controller
 @RequiredArgsConstructor
@@ -32,9 +28,9 @@ import static spring.jwProject.web.SessionConst.LOGIN_MEMBER;
 public class MemberController {
 
     private final MemberService service;
-    private final MemberRepository repository;
+//    private final MemberRepository repository;
 
-    // 로그인 페이지
+/*    // 로그인 페이지
     @GetMapping("/login")
     public String loginForm(Model model) {
         model.addAttribute("member", new LoginMember());
@@ -194,6 +190,6 @@ public class MemberController {
         service.updateMember(member);
 
         return "redirect:/";
-    }
+    }*/
 
 }

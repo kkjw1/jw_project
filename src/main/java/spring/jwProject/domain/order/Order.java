@@ -12,14 +12,14 @@ import spring.jwProject.domain.member.Member;
 @Table(name = "ORDERS")
 public class Order extends BaseEntity {
     @Id @GeneratedValue
-    @Column(name = "ORDER_ID")
-    private Long id;
+    @Column(name = "ORDER_NO")
+    private Long no;
 
     @ManyToOne
-    @JoinColumn(name = "MEMBER_ID")
+    @JoinColumn(name = "MEMBER_NO")
     private Member member;
     @ManyToOne
-    @JoinColumn(name = "ITEM_ID")
+    @JoinColumn(name = "ITEM_NO")
     private Item item;
     private OrderStatus orderStatus;
     private int count;

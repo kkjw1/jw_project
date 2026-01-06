@@ -9,11 +9,11 @@ import spring.jwProject.domain.item.Item;
 @Getter
 public class ItemInquiry extends BaseEntity {
     @Id @GeneratedValue
-    @Column(name = "ITEM_INQUIRY_ID")
-    private Long id;
+    @Column(name = "ITEM_INQUIRY_NO")
+    private Long no;
 
     @ManyToOne
-    @JoinColumn(name = "ITEM_ID")
+    @JoinColumn(name = "ITEM_NO")
     private Item item;
 
     private Long memberId;

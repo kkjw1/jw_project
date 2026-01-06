@@ -8,8 +8,6 @@ import spring.jwProject.domain.BeforeMember;
 import spring.jwProject.domain.member.Member;
 import spring.jwProject.repository.member.MemberRepository;
 
-import java.util.Optional;
-
 @Slf4j
 @Component
 @RequiredArgsConstructor
@@ -22,13 +20,8 @@ public class MemberService {
      * 회원가입
      * @param member
      */
-    public BeforeMember signUp(BeforeMember member) {
-        if (repository.findById(member.getMemberId()).orElse(null) == null) {
-            repository.save(member);
-            return member;
-        }
-        log.info("signUp Fail member={}",member);
-        return null;
+    public Member signUp(Member member) {
+        return repository.save(member);
     }
 
     /**
@@ -36,7 +29,7 @@ public class MemberService {
      * @param memberId
      */
     public void withdraw(String memberId) {
-        repository.delete(memberId);
+
     }
 
 
@@ -45,8 +38,10 @@ public class MemberService {
      * @param member
      */
     public BeforeMember updateMember(BeforeMember member) {
-        return repository.update(member);
+//        return repository.update(member);
+        return null;
     }
+
 
 
     /**
@@ -56,8 +51,9 @@ public class MemberService {
      * @return 성공:Member, 실패:null
      */
     public BeforeMember login(String memberId, String password) {
-        return repository.findById(memberId)
+/*        return repository.findById(memberId)
                 .filter(member -> member.getPassword().equals(password))
-                .orElse(null);
+                .orElse(null);*/
+        return null;
     }
 }

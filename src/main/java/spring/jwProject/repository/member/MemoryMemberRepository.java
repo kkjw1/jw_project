@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 import spring.jwProject.domain.BeforeMember;
 import spring.jwProject.domain.MemberLevel;
+import spring.jwProject.domain.member.Member;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,12 +15,23 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 
 
-@Repository
+
 @Slf4j
 public class MemoryMemberRepository implements MemberRepository{
 
     private static Map<String, BeforeMember> repository = new ConcurrentHashMap<>();
     private static AtomicLong sequence = new AtomicLong(1);
+
+    @Override
+    public Member save(Member member) {
+        return null;
+    }
+
+    @Override
+    public boolean checkId(String id) {
+        return false;
+    }
+/*
 
     @Override
     public BeforeMember save(BeforeMember member) {
@@ -52,6 +64,7 @@ public class MemoryMemberRepository implements MemberRepository{
                 .filter(m -> m.getMemberId().equals(memberId)).findAny();
         return any;
     }
+*/
 
     public List<BeforeMember> findAll() {
         return new ArrayList<>(repository.values());
@@ -59,7 +72,7 @@ public class MemoryMemberRepository implements MemberRepository{
 
 
 
-    //테스트용
+/*    //테스트용
     public void clearAll() {
         repository.clear();
     }
@@ -76,5 +89,5 @@ public class MemoryMemberRepository implements MemberRepository{
     public Long getMemberNo(String memberId) {
         BeforeMember member = repository.get(memberId);
         return member.getMemberNo();
-    }
+    }*/
 }

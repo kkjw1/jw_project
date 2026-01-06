@@ -14,11 +14,11 @@ import java.util.List;
 @Getter
 public class Item extends BaseEntity {
     @Id @GeneratedValue
-    @Column(name = "ITME_ID")
-    private Long id;
+    @Column(name = "ITME_NO")
+    private Long no;
 
     @ManyToOne
-    @JoinColumn(name = "SELLER_ID")
+    @JoinColumn(name = "SELLER_NO")
     private Seller seller;
 
     private String name;

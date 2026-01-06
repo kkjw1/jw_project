@@ -10,10 +10,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import spring.jwProject.domain.member.Member;
 import spring.jwProject.repository.member.MemberRepository;
-import spring.jwProject.repository.member.MemoryMemberRepository;
 
 import static spring.jwProject.web.SessionConst.LOGIN_MEMBER;
 
@@ -22,7 +20,7 @@ import static spring.jwProject.web.SessionConst.LOGIN_MEMBER;
 @RequiredArgsConstructor
 public class HomeController {
 
-    private final MemoryMemberRepository repository;
+    private final MemberRepository repository;
 
     /**
      * 메인 화면
@@ -92,9 +90,11 @@ public class HomeController {
     /**
      * 테스트 데이터
      */
+/*
     @PostConstruct
     public void init() {
         repository.init();
     }
+*/
 
 }

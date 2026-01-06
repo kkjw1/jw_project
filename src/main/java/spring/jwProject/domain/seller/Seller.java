@@ -15,9 +15,10 @@ import spring.jwProject.domain.member.MemberLevel;
 public class Seller extends BaseEntity {
     @Id
     @GeneratedValue
-    @Column(name = "SELLER_ID")
-    private Long id;
+    @Column(name = "SELLER_NO")
+    private Long no;
 
+    private String id;
     private String password;
     private String email;
     private String name;
