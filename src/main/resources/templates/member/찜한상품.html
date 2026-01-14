@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>찜한 상품 - 마이쿠팡</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body { background-color: #f0f1f4; color: #333; }
+        .mypage-header { background-color: #fff; border-bottom: 1px solid #ddd; padding: 20px 0; }
+
+        /* 사이드 메뉴 */
+        .side-menu { background: #fff; border: 1px solid #ddd; border-radius: 8px; padding: 15px 0; }
+        .side-menu a { display: block; padding: 10px 20px; color: #555; text-decoration: none; font-size: 14px; }
+        .side-menu a.active { color: #4285f4; font-weight: bold; background-color: #f0f7ff; border-right: 4px solid #4285f4; }
+
+        /* 체크박스 영역 상단 바 */
+        .batch-action-bar { background: #fff; border: 1px solid #ddd; border-radius: 8px; padding: 12px 20px; margin-bottom: 20px; }
+
+        /* 찜한 상품 카드 */
+        .wish-card { background: #fff; border: 1px solid #ddd; border-radius: 8px; transition: 0.3s; position: relative; }
+        .wish-card:hover { box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+
+        /* 카드 내 체크박스 위치 */
+        .wish-checkbox-container { position: absolute; top: 12px; left: 12px; z-index: 10; }
+        .wish-checkbox { width: 20px; height: 20px; cursor: pointer; }
+
+        .btn-delete-single { position: absolute; top: 10px; right: 10px; background: none; border: none; color: #ccc; font-size: 1.2rem; cursor: pointer; }
+        .btn-delete-single:hover { color: #ff4d4d; }
+
+        .wish-img { width: 100%; height: 180px; object-fit: contain; padding: 30px; border-bottom: 1px solid #eee; }
+        .product-name { font-size: 0.9rem; height: 40px; overflow: hidden; margin-bottom: 8px; font-weight: 500; }
+        .product-price { font-size: 1.1rem; font-weight: bold; color: #ae0000; }
+
+        .btn-add-cart { border: 1px solid #4285f4; color: #4285f4; font-weight: bold; background: #fff; }
+        .btn-add-cart:hover { background: #4285f4; color: #fff; }
+    </style>
+</head>
+<body>
+
+<div class="mypage-header mb-4 text-center">
+    <div class="container">
+        <h2 class="h4 mb-0 font-weight-bold">마이쿠팡</h2>
+    </div>
+</div>
+
+<div class="container pb-5">
+    <div class="row">
+        <div class="col-md-3">
+            <div class="side-menu shadow-sm">
+                <div class="px-3 mb-2"><h5 class="font-weight-bold small text-muted">MY 쇼핑</h5></div>
+                <a href="#">주문목록/배송조회</a>
+                <a href="#">취소/반품/교환 내역</a>
+                <a href="#" class="active">찜한 상품</a>
+                <hr>
+                <div class="px-3 mb-3"><h5 class="font-weight-bold">MY 정보</h5></div>
+                <a href="#">개인정보 확인/수정</a>
+                <a href="#">배송지 관리</a>
+            </div>
+        </div>
+
+        <div class="col-md-9">
+            <h4 class="mb-4 font-weight-bold">찜한 상품</h4>
+
+            <div class="batch-action-bar d-flex justify-content-between align-items-center shadow-sm">
+                <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" id="selectAll" onclick="toggleAll(this)">
+                    <label class="custom-control-label font-weight-bold" for="selectAll">전체 선택</label>
+                </div>
+                <div>
+                    <button class="btn btn-sm btn-outline-danger mr-2" onclick="deleteSelected()">선택 삭제</button>
+                    <button class="btn btn-sm btn-primary" onclick="cartSelected()">선택 장바구니 담기</button>
+                </div>
+            </div>
+
+            <div class="row" id="wishlistContainer">
+                <div class="col-6 col-md-4 mb-4 wish-item-wrapper">
+                    <div class="wish-card h-100 shadow-sm">
+                        <div class="wish-checkbox-container">
+                            <input type="checkbox" class="wish-checkbox item-check">
+                        </div>
+                        <button class="btn-delete-single">&times;</button>
+                        <img src="https://via.placeholder.com/200" class="wish-img">
+                        <div class="card-body p-3 text-center">
+                            <p class="product-name text-left">무선 저소음 기계식 키보드 화이트</p>
+                            <div class="product-price text-left mb-3">45,900원</div>
+                            <button class="btn btn-block btn-add-cart btn-sm">장바구니 담기</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-6 col-md-4 mb-4 wish-item-wrapper">
+                    <div class="wish-card h-100 shadow-sm">
+                        <div class="wish-checkbox-container">
+                            <input type="checkbox" class="wish-checkbox item-check">
+                        </div>
+                        <button class="btn-delete-single">&times;</button>
+                        <img src="https://via.placeholder.com/200" class="wish-img">
+                        <div class="card-body p-3 text-center">
+                            <p class="product-name text-left">스테비아 토마토 500g</p>
+                            <div class="product-price text-left mb-3">12,900원</div>
+                            <button class="btn btn-block btn-add-cart btn-sm">장바구니 담기</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-6 col-md-4 mb-4 wish-item-wrapper">
+                    <div class="wish-card h-100 shadow-sm">
+                        <div class="wish-checkbox-container">
+                            <input type="checkbox" class="wish-checkbox item-check">
+                        </div>
+                        <button class="btn-delete-single">&times;</button>
+                        <img src="https://via.placeholder.com/200" class="wish-img">
+                        <div class="card-body p-3 text-center">
+                            <p class="product-name text-left">고속충전 케이블 2m</p>
+                            <div class="product-price text-left mb-3">9,800원</div>
+                            <button class="btn btn-block btn-add-cart btn-sm">장바구니 담기</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // 1. 전체 선택/해제 로직
+    function toggleAll(source) {
+        const checkboxes = document.querySelectorAll('.item-check');
+        checkboxes.forEach(checkbox => {
+            checkbox.checked = source.checked;
+        });
+    }
+
+    // 2. 선택 삭제 로직
+    function deleteSelected() {
+        const selected = document.querySelectorAll('.item-check:checked');
+        if (selected.length === 0) {
+            alert("삭제할 상품을 선택해주세요.");
+            return;
+        }
+        if (confirm(`${selected.length}개의 상품을 찜한 목록에서 삭제하시겠습니까?`)) {
+            // 실제 구현 시 여기서 서버 API 호출 (AJAX)
+            selected.forEach(cb => {
+                cb.closest('.wish-item-wrapper').remove();
+            });
+            alert("삭제되었습니다.");
+        }
+    }
+
+    // 3. 선택 장바구니 담기 로직
+    function cartSelected() {
+        const selected = document.querySelectorAll('.item-check:checked');
+        if (selected.length === 0) {
+            alert("장바구니에 담을 상품을 선택해주세요.");
+            return;
+        }
+        // 실제 구현 시 여기서 서버 API 호출 (AJAX)
+        alert(`${selected.length}개의 상품이 장바구니에 담겼습니다.`);
+    }
+</script>
+
+</body>
+</html>

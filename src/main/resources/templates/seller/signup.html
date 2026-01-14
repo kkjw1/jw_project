@@ -7,34 +7,41 @@
     <link rel="stylesheet"  href="../css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}">
 
     <style>
-        html, body {
-            height: 100%;
+        /* 1. 고정 높이 대신 최소 높이를 설정하여 스크롤 허용 */
+        body {
+            min-height: 100vh; /* 화면 전체 높이 확보 */
+            display: flex;
+            justify-content: center;
+            align-items: flex-start; /* 중앙 고정 대신 위쪽부터 배치 */
+            padding: 40px 0; /* 위아래 주소창에 가리지 않게 여백 추가 */
+            background-color: #f8f9fa;
         }
+
         .register-container {
-            /* 판매자는 일반 회원보다 입력 필드가 많으므로 너비를 550px로 확장 */
             max-width: 550px;
+            width: 95%; /* 모바일 대응: 화면 너비가 작을 때 여백 확보 */
             padding: 30px;
             border: 1px solid #ccc;
             border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0,0,0,.05);
+            box-shadow: 0 4px 12px rgba(0,0,0,.1);
             background-color: #fff;
-            margin-top: 20px;
-            margin-bottom: 20px;
+            /* margin-top/bottom은 body padding으로 대체되므로 삭제 가능 */
         }
-        .input-error {
-            border-color: #dc3545 !important; /* Bootstrap input-error와 충돌 방지 */
-            color: #dc3545;
-        }
+
+        /* fieldset 내부 여백 조정 */
         fieldset {
             border: 1px solid #e9ecef;
-            padding: 20px;
+            padding: 15px 20px;
             margin-bottom: 25px;
             border-radius: 6px;
         }
+
+        /* 레전드 폰트 굵기 추가 */
         legend {
             width: auto;
             padding: 0 10px;
             font-size: 1.1em;
+            font-weight: bold;
             color: #007bff;
         }
     </style>

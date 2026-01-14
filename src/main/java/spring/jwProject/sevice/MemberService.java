@@ -17,7 +17,7 @@ public class MemberService {
 
 
     /**
-     * 회원가입
+     * 회원가입 O
      * @param member
      */
     public Member signUp(Member member) {
@@ -25,13 +25,29 @@ public class MemberService {
     }
 
     /**
-     * 아이디 중복 검사
+     * 아이디 중복 검사 O
      * @return 중복아니면 true, 중복이면 false
      */
     public boolean checkId(String id) {
         return repository.findById(id) == null;
     }
 
+    /**
+     * 로그인 O
+     * @param id
+     * @param password
+     * @return 성공:Member, 실패:null
+     */
+    public Member login(String id, String password) {
+/*        return repository.findById(memberId)
+                .filter(member -> member.getPassword().equals(password))
+                .orElse(null);*/
+        Member findMember = repository.findById(id);
+        if (findMember != null && findMember.passwordEquals(password)) {
+            return findMember;
+        }
+        return null;
+    }
 
     /**
      * 회원 탈퇴
@@ -51,18 +67,4 @@ public class MemberService {
         return null;
     }
 
-
-
-    /**
-     * 로그인
-     * @param memberId
-     * @param password
-     * @return 성공:Member, 실패:null
-     */
-    public BeforeMember login(String memberId, String password) {
-/*        return repository.findById(memberId)
-                .filter(member -> member.getPassword().equals(password))
-                .orElse(null);*/
-        return null;
-    }
 }

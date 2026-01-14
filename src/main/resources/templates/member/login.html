@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>로그인 페이지</title>
-    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" href="../css/bootstrap.min.css">
     <style>
         /* body 높이를 뷰포트 전체로 설정하고 Flexbox를 사용하여 내용을 수직/수평 중앙에 배치 */
         html, body {
@@ -49,8 +49,8 @@
 
 
         <div class="form-group mb-3">
-            <input type="text" class="form-control " placeholder="아이디" th:field="*{memberId}" th:errorclass="input-error">
-            <div class="text-danger" style="font-size: 0.875rem;" th:errors="*{memberId}">아이디 에러메시지</div>
+            <input type="text" class="form-control " placeholder="아이디" th:field="*{id}" th:errorclass="input-error">
+            <div class="text-danger" style="font-size: 0.875rem;" th:errors="*{id}">아이디 에러메시지</div>
         </div>
 
         <div class="form-group mb-3">

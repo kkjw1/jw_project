@@ -7,7 +7,7 @@ import lombok.Data;
 public class LoginMember {
 
     @NotBlank(message = "아이디가 공백입니다.")
-    String memberId;
+    String id;
 
     @NotBlank(message = "비밀번호가 공백입니다.")
     String password;
@@ -16,7 +16,7 @@ public class LoginMember {
 
     }
 
-    public LoginMember(String memberId) {
-        this.memberId = memberId;
+    public LoginMember(String id) {
+        this.id = this.id;
     }
 }

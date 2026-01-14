@@ -48,11 +48,11 @@ public class MemberController {
                         HttpServletRequest request) {
 
         if (bindingResult.hasErrors()) {
-            log.info("login Fail");
+            log.info("login fail");
             return "member/login";
         }
 
-        BeforeMember login = service.login(member.getMemberId(), member.getPassword());
+        Member login = service.login(member.getId(), member.getPassword());
         log.info("login member={}",login);
 
         if (login == null) {
@@ -61,7 +61,7 @@ public class MemberController {
         }
 
         HttpSession session = request.getSession();
-        session.setAttribute(SessionConst.LOGIN_MEMBER, login);
+        session.setAttribute(SessionConst.LOGIN_MEMBER, member);
         return "redirect:/";
     }
 
@@ -77,65 +77,60 @@ public class MemberController {
     //회원가입 페이지
     @GetMapping("/signup")
     public String signUpForm(Model model) {
-        model.addAttribute("member", new Member());
+        model.addAttribute("member", new SignUpMember());
         return "member/signup";
     }
 
-/*
+    //아이디 중복 체크
+    @GetMapping("/signup/checkId")
+    @ResponseBody
+    public boolean checkDuplicateId(@RequestParam("id") String id) {
+        return service.checkId(id);
+    }
 
     //회원가입
     @PostMapping("/signup")
     public String signUp(@Validated @ModelAttribute("member") SignUpMember signUpMember, BindingResult bindingResult,
-                         RedirectAttributes redirectAttributes, HttpServletResponse response) {
-
-        Member findMember = repository.findById(signUpMember.getMemberId());
-
-        if (findMember != null) {
-            // 회원가입 실패인 경우
-            bindingResult.reject("signUpError", "회원가입 실패 메시지");
-        }
+                         RedirectAttributes redirectAttributes) {
 
         if (bindingResult.hasErrors()) {
             log.info("error={}", bindingResult);
             return "member/signup";
         }
 
+        Member signedMember = service.signUp(new Member(
+                signUpMember.getId(),
+                signUpMember.getEmail(),
+                signUpMember.getPassword(),
+                signUpMember.getName(),
+                signUpMember.getGender(),
+                signUpMember.getTelecom(),
+                signUpMember.getPhoneNumber(),
+                signUpMember.getPostcode(),
+                signUpMember.getRoadAddress(),
+                signUpMember.getDetailAddress()));
 
-        BeforeMember member = new BeforeMember();
-        member.setMemberId(signUpMember.getMemberId());
-        member.setMemberName(signUpMember.getMemberName());
-        member.setPassword(signUpMember.getPassword());
-
-        member.setPostcode(signUpMember.getPostcode());
-        member.setDetailAddress(signUpMember.getDetailAddress());
-        member.setExtraAddress(signUpMember.getExtraAddress());
-        member.setRoadAddress(signUpMember.getRoadAddress());
-        member.setJibunAddress(signUpMember.getJibunAddress());
-
-
-        BeforeMember signed = service.signUp(member);
-        log.info("signUpMember={}",signed);
-
-        redirectAttributes.addAttribute("loginId", signed.getMemberId());
+        log.info("signUp complete, Member={}",signedMember);
+        redirectAttributes.addAttribute("loginId", signedMember.getId());
         return "redirect:/member/login/{loginId}";
     }
-*/
 
-/*
-    //마이페이지
-    @GetMapping("/mypage")
+
+    //회원정보수정
+    @GetMapping("/memberModify")
     public String myPageForm(@RequestParam("memberId") String memberId, Model model) {
-        BeforeMember member = repository.findById(memberId).orElse(null);
+        Member member = repository.findById(memberId);
         model.addAttribute("member", member);
 
-        return "member/mypage";
+        return "member/memberModify";
     }
 
-    @PostMapping("/mypage")
+/*
+    @PostMapping("/mypage/memberModify")
     public String myPageUpdate(@Validated @ModelAttribute("member") UpdateMember updateMember, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             log.info("myPageUpdate Fail={}", bindingResult);
-            return "member/mypage";
+            return "member/memberModify";
         }
 
         BeforeMember member = repository.findById(updateMember.getMemberId()).orElse(null);

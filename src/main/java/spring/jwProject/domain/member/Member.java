@@ -34,7 +34,7 @@ public class Member extends BaseEntity {
     public Member() {
     }
 
-    public Member(String id, String email, String password, String name, Gender gender, String telecom, String phoneNumber, String postcode, String roadAddress, String detailAddress, MemberLevel level) {
+    public Member(String id, String email, String password, String name, Gender gender, String telecom, String phoneNumber, String postcode, String roadAddress, String detailAddress) {
         this.id = id;
         this.email = email;
         this.password = password;
@@ -45,6 +45,10 @@ public class Member extends BaseEntity {
         this.postcode = postcode;
         this.roadAddress = roadAddress;
         this.detailAddress = detailAddress;
-        this.level = level;
+        this.level = MemberLevel.NORMAL;
+    }
+
+    public boolean passwordEquals(String password) {
+        return this.password.equals(password);
     }
 }

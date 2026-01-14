@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import spring.jwProject.domain.member.Member;
 import spring.jwProject.repository.member.MemberRepository;
+import spring.jwProject.validation.form.LoginMember;
 
 import static spring.jwProject.web.SessionConst.LOGIN_MEMBER;
 
@@ -34,9 +35,10 @@ public class HomeController {
             return "home/home";
         }
 
-        Member loginMember = (Member) session.getAttribute(LOGIN_MEMBER);
+        LoginMember loginMember = (LoginMember) session.getAttribute(LOGIN_MEMBER);
 
         if (loginMember == null) {
+            model.addAttribute("isLogin", false);
             return "home/home";
         }
 
@@ -83,6 +85,11 @@ public class HomeController {
     @GetMapping("/order_delivery_detail")
     public String order_delivery_detail() {
         return "seller/order_delivery_detail";
+    }
+
+    @GetMapping("/test")
+    public String test() {
+        return "item/item_detail";
     }
 
 

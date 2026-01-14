@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>상품 상세 페이지</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style th:insert="~{/home/common :: home_style}">
+        .product-img-container { position: sticky; top: 100px; }
+        .product-title { font-size: 1.5rem; font-weight: bold; color: #333; }
+        .price-area { font-size: 1.8rem; color: #ae0000; font-weight: bold; }
+        .rocket-txt { color: #0089ff; font-weight: bold; font-style: italic; }
+        .delivery-info { font-size: 0.9rem; color: #111; border-top: 1px solid #eee; border-bottom: 1px solid #eee; padding: 15px 0; }
+        .btn-cart { background-color: white; border: 1px solid #4285f4; color: #4285f4; font-weight: bold; height: 50px; }
+        .btn-buy { background-color: #4285f4; border: 1px solid #4285f4; color: white; font-weight: bold; height: 50px; }
+        .btn-buy:hover { background-color: #357abd; }
+        .nav-tabs .nav-link { color: #555; font-weight: bold; padding: 15px 30px; }
+        .nav-tabs .nav-link.active { color: #4285f4; border-bottom: 3px solid #4285f4; }
+    </style>
+</head>
+<body>
+
+<header th:replace="~{/home/common :: header}"></header>
+
+<main class="container">
+    <div class="row">
+        <div class="col-md-5">
+            <div class="product-img-container text-center">
+                <img src="https://via.placeholder.com/450x450" class="img-fluid rounded border" alt="상품 이미지">
+                <div class="d-flex justify-content-center mt-3">
+                    <img src="https://via.placeholder.com/60" class="mx-1 border rounded cursor-pointer">
+                    <img src="https://via.placeholder.com/60" class="mx-1 border rounded cursor-pointer">
+                    <img src="https://via.placeholder.com/60" class="mx-1 border rounded cursor-pointer">
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-7">
+            <div class="pl-md-4">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb bg-transparent p-0 small">
+                        <li class="breadcrumb-item"><a href="#">가전디지털</a></li>
+                        <li class="breadcrumb-item active">컴퓨터부품</li>
+                    </ol>
+                </nav>
+
+                <h1 class="product-title mb-2">무선 저소음 기계식 키보드 - 화이트 에디션 (K-990)</h1>
+                <div class="mb-3">
+                    <span class="text-warning">⭐⭐⭐⭐⭐</span>
+                    <a href="#" class="small ml-2">1,240개 상품평</a>
+                </div>
+
+                <div class="price-area mb-1">
+                    45,900원 <span class="rocket-txt" style="font-size: 1rem;">🚀로켓배송</span>
+                </div>
+                <p class="text-muted small mb-4">카드사별 무이자 할부 혜택 확인하기</p>
+
+                <div class="delivery-info mb-4">
+                    <div><strong>무료배송</strong></div>
+                    <div class="text-success small">내일 1/11(일) 도착 보장 (2시간 15분 남음)</div>
+                </div>
+
+                <div class="form-group">
+                    <label class="small font-weight-bold">색상 선택</label>
+                    <select class="form-control">
+                        <option>화이트 (본상품)</option>
+                        <option>블랙 (품절)</option>
+                        <option>핑크 (+2,000원)</option>
+                    </select>
+                </div>
+
+                <div class="row no-gutters mt-4">
+                    <div class="col-6 pr-2">
+                        <button class="btn btn-cart btn-block">장바구니 담기</button>
+                    </div>
+                    <div class="col-6 pl-2">
+                        <button class="btn btn-buy btn-block">바로구매 ></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="mt-5 pt-5">
+        <ul class="nav nav-tabs justify-content-center" id="productTab" role="tablist">
+            <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#detail">상품상세</a></li>
+            <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#review">상품리뷰(1,240)</a></li>
+            <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#qna">상품문의</a></li>
+        </ul>
+        <div class="tab-content border-left border-right border-bottom p-5 text-center">
+            <div class="tab-pane fade show active" id="detail">
+                <img src="https://via.placeholder.com/800x1200?text=Product+Description+Image" class="img-fluid">
+            </div>
+        </div>
+    </div>
+</main>
+
+<footer th:replace="~{/home/common :: footer}"></footer>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
