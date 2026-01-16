@@ -23,6 +23,7 @@ public class Member extends BaseEntity {
     private String telecom;
     private String phoneNumber;
 
+    // 기본배송지
     private String postcode;
     private String roadAddress;
     private String detailAddress;
@@ -50,5 +51,39 @@ public class Member extends BaseEntity {
 
     public boolean passwordEquals(String password) {
         return this.password.equals(password);
+    }
+
+    public void updateEmail(String email) {
+        this.email = email;
+    }
+
+    public void updatePassword(String password) {
+        this.password = password;
+    }
+
+    public void updateName(String name) {
+        this.name = name;
+    }
+
+    public void updateGender(Gender gender) {
+        this.gender = gender;
+    }
+
+    public void updateTelecom(String telecom) {
+        this.telecom = telecom;
+    }
+
+    public void updatePhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public void updateMainAddress(String postcode, String roadAddress, String detailAddress) {
+        this.postcode = postcode;
+        this.roadAddress = roadAddress;
+        this.detailAddress = detailAddress;
+    }
+
+    public void updateLevel(MemberLevel level) {
+        this.level = level;
     }
 }

@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import spring.jwProject.domain.member.Member;
+import spring.jwProject.validation.form.UpdateMember;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -36,5 +37,23 @@ public class JpaMemberRepository implements MemberRepository {
         if (findMembers.isEmpty()) {
             return null;
         } else return findMembers.get(0);
+    }
+
+    @Override
+    public Member update(UpdateMember updateMember) {
+        Member member = findById(updateMember.id);
+        if (member == null) {
+            return null;
+        }
+        member.updateName(updateMember.getName());
+        member.updateEmail(updateMember.getEmail());
+        member.updatePassword(updateMember.getPassword());
+        member.updateTelecom(updateMember.getTelecom());
+        member.updatePhoneNumber(updateMember.getPhoneNumber());
+        member.updateGender(updateMember.getGender());
+
+        member.setLastModifiedBy(updateMember.getId());
+        member.setLastModifiedDate(LocalDateTime.now());
+        return member;
     }
 }

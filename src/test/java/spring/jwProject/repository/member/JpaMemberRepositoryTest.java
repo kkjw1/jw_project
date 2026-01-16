@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import spring.jwProject.domain.member.Gender;
 import spring.jwProject.domain.member.Member;
 import spring.jwProject.domain.member.MemberLevel;
+import spring.jwProject.validation.form.UpdateMember;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -42,7 +43,7 @@ class JpaMemberRepositoryTest {
     }
     
     @Test
-    @DisplayName("아이디로 찾기")
+    @DisplayName("아이디로 찾기 테스트")
     public void findByIdTest() throws Exception {
         //given
         Member member1 = new Member("member1", "member1@Email.com", "password", "name", Gender.MAN, "SKT",
@@ -63,5 +64,33 @@ class JpaMemberRepositoryTest {
         //then
         Assertions.assertThat(findMember).isNull();
         Assertions.assertThat(findMember2.getNo()).isEqualTo(member2.getNo());
+    }
+
+    @Test
+    @DisplayName("업데이트 테스트")
+    @Commit
+    public void updateTest() throws Exception {
+        //given
+        Member member1 = new Member("member1", "member1@Email.com", "password", "name", Gender.MAN, "SKT",
+                "010-1234-1234", "12345", "roadAddress", "detailAddress");
+        Member member2 = new Member("member2", "member2@Email.com", "password", "name", Gender.WOMAN, "SKT",
+                "010-1234-1234", "12345", "roadAddress", "detailAddress");
+        em.persist(member1);
+        em.persist(member2);
+        em.flush();
+        em.clear();
+
+        //when
+        log.info("업데이트 성공");
+        UpdateMember updateMember = new UpdateMember("member1", "update", "update", "update", "update", "update", Gender.MAN);
+        Member update = repository.update(updateMember);
+        Assertions.assertThat(update.getName()).isEqualTo("update");
+
+
+        log.info("업데이트 실패");
+        UpdateMember updateMember2 = new UpdateMember("member3", "update", "update", "update", "update", "update", Gender.MAN);
+        Member update1 = repository.update(updateMember2);
+        Assertions.assertThat(update1).isNull();
+
     }
 }

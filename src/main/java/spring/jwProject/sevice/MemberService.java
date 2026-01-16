@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 import spring.jwProject.domain.BeforeMember;
 import spring.jwProject.domain.member.Member;
 import spring.jwProject.repository.member.MemberRepository;
+import spring.jwProject.validation.form.UpdateMember;
 
 @Slf4j
 @Component
@@ -50,21 +51,20 @@ public class MemberService {
     }
 
     /**
+     * 회원 수정 O
+     * @param updateMember
+     */
+    public Member memberModify(UpdateMember updateMember) {
+        return repository.update(updateMember);
+    }
+
+
+    /**
      * 회원 탈퇴
      * @param memberId
      */
     public void withdraw(String memberId) {
 
-    }
-
-
-    /**
-     * 회원 수정
-     * @param member
-     */
-    public BeforeMember updateMember(BeforeMember member) {
-//        return repository.update(member);
-        return null;
     }
 
 }

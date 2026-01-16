@@ -12,6 +12,8 @@ public class LoginMember {
     @NotBlank(message = "비밀번호가 공백입니다.")
     String password;
 
+    String name;
+
     public LoginMember() {
 
     }

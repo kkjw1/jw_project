@@ -1,21 +1,20 @@
 package spring.jwProject.web.member;
 
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.Banner;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import spring.jwProject.domain.BeforeMember;
 import spring.jwProject.domain.member.Member;
 import spring.jwProject.repository.member.MemberRepository;
 import spring.jwProject.sevice.MemberService;
-import spring.jwProject.validation.form.ChangePwMember;
+import spring.jwProject.validation.form.CheckPWMember;
 import spring.jwProject.validation.form.LoginMember;
 import spring.jwProject.validation.form.SignUpMember;
 import spring.jwProject.validation.form.UpdateMember;
@@ -61,7 +60,7 @@ public class MemberController {
         }
 
         HttpSession session = request.getSession();
-        session.setAttribute(SessionConst.LOGIN_MEMBER, member);
+        session.setAttribute(SessionConst.LOGIN_MEMBER, login);
         return "redirect:/";
     }
 
@@ -116,13 +115,47 @@ public class MemberController {
     }
 
 
-    //회원정보수정
-    @GetMapping("/memberModify")
-    public String myPageForm(@RequestParam("memberId") String memberId, Model model) {
-        Member member = repository.findById(memberId);
-        model.addAttribute("member", member);
+    //개인정보수정 비밀번호 체크
+    @GetMapping("/mypage/memberModifyCheckPW")
+    public String memberModifyCheckPWForm(@RequestParam("memberId") String memberId, Model model) {
+        CheckPWMember checkPWMember = new CheckPWMember();
+        checkPWMember.setId(memberId);
+        model.addAttribute("checkPWMember", checkPWMember);
+        return "member/member_modify_checkPW";
+    }
 
-        return "member/memberModify";
+    @PostMapping("/mypage/memberModifyCheckPW")
+    public String memberModifyCheckPW(@Validated @ModelAttribute CheckPWMember checkPWMember, BindingResult bindingResult,
+                                      Model model, RedirectAttributes redirectAttributes) {
+
+        if (bindingResult.hasErrors()) {
+            log.info("memberModifyCheckPW Error");
+            return "member/member_modify_checkPW";
+        }
+        // 비밀번호 같은지 체크
+        System.out.println("!!!!!!!!" + checkPWMember.getId() + checkPWMember.getPassword());
+        Member checkMember = service.login(checkPWMember.getId(), checkPWMember.getPassword());
+        // 비밀번호 에러
+        if (checkMember == null) {
+            log.info("memberModifyCheckPW Error");
+            bindingResult.reject("CheckPWError", "비밀번호 체크 에러");
+            model.addAttribute("checkPWMember", checkPWMember);
+            return "member/member_modify_checkPW";
+        }
+        // 비밀번호 성공
+        redirectAttributes.addAttribute("memberId", checkPWMember.getId());
+        return "redirect:/member/mypage/memberModify";
+    }
+
+
+    //개인정보수정
+    @GetMapping("/mypage/memberModify")
+    public String memberModifyForm(@RequestParam("memberId") String memberId, Model model) {
+        Member member = repository.findById(memberId);
+        UpdateMember updateMember = new UpdateMember(member.getId(), member.getName(), member.getEmail(), member.getPassword(), member.getTelecom(), member.getPhoneNumber(), member.getGender());
+
+        model.addAttribute("member", updateMember);
+        return "member/member_modify";
     }
 
 /*

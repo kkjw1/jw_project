@@ -10,8 +10,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import spring.jwProject.domain.member.Gender;
 import spring.jwProject.domain.member.Member;
 import spring.jwProject.repository.member.MemberRepository;
+import spring.jwProject.sevice.MemberService;
 import spring.jwProject.validation.form.LoginMember;
 
 import static spring.jwProject.web.SessionConst.LOGIN_MEMBER;
@@ -22,6 +24,7 @@ import static spring.jwProject.web.SessionConst.LOGIN_MEMBER;
 public class HomeController {
 
     private final MemberRepository repository;
+    private final MemberService service;
 
     /**
      * 메인 화면
@@ -35,7 +38,7 @@ public class HomeController {
             return "home/home";
         }
 
-        LoginMember loginMember = (LoginMember) session.getAttribute(LOGIN_MEMBER);
+        Member loginMember = (Member) session.getAttribute(LOGIN_MEMBER);
 
         if (loginMember == null) {
             model.addAttribute("isLogin", false);
@@ -97,11 +100,14 @@ public class HomeController {
     /**
      * 테스트 데이터
      */
-/*
     @PostConstruct
     public void init() {
-        repository.init();
+        Member member1 = new Member("member1", "member1@Email.com", "password", "회원1", Gender.MAN, "SKT",
+                "010-1234-1234", "12345", "roadAddress", "detailAddress");
+        Member member2 = new Member("member2", "member2@Email.com", "password", "회원2", Gender.WOMAN, "SKT",
+                "010-1111-2222", "12345", "roadAddress", "detailAddress");
+        service.signUp(member1);
+        service.signUp(member2);
     }
-*/
 
 }

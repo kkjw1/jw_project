@@ -137,11 +137,11 @@
 <header th:fragment="header">
     <div class="top-utility-bar">
         <div class="container d-flex justify-content-end" th:unless="${isLogin}">
-            <a href="#">로그인</a>
-            <a href="#">회원가입</a>
+            <a href="#" th:href="@{/member/login}">로그인</a>
+            <a href="#" th:href="@{/member/signup}">회원가입</a>
         </div>
         <div class="container d-flex justify-content-end" th:if="${isLogin}">
-            <a th:text="|${member.getId()} 님|">닉네임</a>
+            <a th:text="|${member.getName()} 님|" th:href="@{/member/mypage/memberModifyCheckPW(memberId=${member.getId()})}">닉네임</a>
             <a href="#">로그아웃</a>
             <a href="#">판매자 가입</a>
         </div>

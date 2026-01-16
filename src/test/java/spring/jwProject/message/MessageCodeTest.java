@@ -12,7 +12,7 @@ public class MessageCodeTest {
     @Test
     @DisplayName("메시지 코드 생성")
     void messageCode() {
-        String[] messageCodes = ms.resolveMessageCodes("signUpError", "Member", "memberId", String.class);
+        String[] messageCodes = ms.resolveMessageCodes("CheckPWError", "Member", "memberId", String.class);
         for (String messageCode : messageCodes) {
             System.out.println("messageCode = " + messageCode);
         }
