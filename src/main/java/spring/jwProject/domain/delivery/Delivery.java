@@ -7,8 +7,9 @@ import spring.jwProject.domain.order.Order;
 
 @Entity
 @Getter
+@SequenceGenerator(name = "DELIVERY_SEQ", sequenceName = "DELIVERY_SEQ", initialValue = 1, allocationSize = 1)
 public class Delivery extends BaseEntity {
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "DELIVERY_SEQ")
     @Column(name = "DELIVERY_NO")
     private Long no;
 

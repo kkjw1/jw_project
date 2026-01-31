@@ -6,9 +6,10 @@ import spring.jwProject.domain.BaseEntity;
 
 @Entity
 @Getter
+@SequenceGenerator(name = "MEMBER_SEQ", sequenceName = "MEMBER_SEQ", initialValue = 1, allocationSize = 1)
 public class Member extends BaseEntity {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "MEMBER_SEQ")
     @Column(name = "MEMBER_NO")
     private Long no;
 

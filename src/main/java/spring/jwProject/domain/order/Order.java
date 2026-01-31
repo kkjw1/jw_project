@@ -10,8 +10,9 @@ import spring.jwProject.domain.member.Member;
 @Entity
 @Getter
 @Table(name = "ORDERS")
+@SequenceGenerator(name = "ORDERS_SEQ", sequenceName = "ORDERS_SEQ", initialValue = 1, allocationSize = 1)
 public class Order extends BaseEntity {
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ORDERS_SEQ")
     @Column(name = "ORDER_NO")
     private Long no;
 

@@ -8,8 +8,9 @@ import spring.jwProject.domain.member.Member;
 
 @Entity
 @Getter
+@SequenceGenerator(name = "CART_SEQ",sequenceName = "CART_SEQ", initialValue = 1, allocationSize = 1)
 public class Cart extends BaseEntity {
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "CART_SEQ")
     @Column(name = "CART_ID")
     private Long id;
 

@@ -7,8 +7,9 @@ import spring.jwProject.domain.item.Item;
 
 @Entity
 @Getter
+@SequenceGenerator(name = "ITEM_INQUIRY_SEQ", sequenceName = "ITEM_INQUIRY_SEQ", initialValue = 1, allocationSize = 1)
 public class ItemInquiry extends BaseEntity {
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ITEM_INQUIRY_SEQ")
     @Column(name = "ITEM_INQUIRY_NO")
     private Long no;
 

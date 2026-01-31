@@ -12,8 +12,9 @@ import java.util.List;
 
 @Entity
 @Getter
+@SequenceGenerator(name = "ITEM_SEQ", sequenceName = "ITEM_SEQ", initialValue = 1, allocationSize = 1)
 public class Item extends BaseEntity {
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ITEM_SEQ")
     @Column(name = "ITME_NO")
     private Long no;
 
