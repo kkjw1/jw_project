@@ -12,4 +12,8 @@ public class CheckPWMember {
 
     public CheckPWMember() {
     }
+
+    public CheckPWMember(String id) {
+        this.id = id;
+    }
 }

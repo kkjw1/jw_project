@@ -1,4 +1,4 @@
-package spring.jwProject.web.seller;
+package spring.jwProject.web;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

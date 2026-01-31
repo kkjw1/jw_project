@@ -106,8 +106,12 @@ public class HomeController {
                 "010-1234-1234", "12345", "roadAddress", "detailAddress");
         Member member2 = new Member("member2", "member2@Email.com", "password", "회원2", Gender.WOMAN, "SKT",
                 "010-1111-2222", "12345", "roadAddress", "detailAddress");
+
+        Member test = new Member("test", "member2@Email.com", "test", "회원2", Gender.WOMAN, "SKT",
+                "010-1111-2222", "12345", "roadAddress", "detailAddress");
         service.signUp(member1);
         service.signUp(member2);
+        service.signUp(test);
     }
 
 }

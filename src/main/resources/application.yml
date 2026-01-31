@@ -24,6 +24,6 @@ logging:
 server:
   servlet:
     session:
-      timeout: 10   #세션 타임아웃 설정
+      timeout: 100   #세션 타임아웃 설정
       tracking-modes: cookie  #첫 로그인할 경우 jsessionid 404오류 해결
 

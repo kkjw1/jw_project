@@ -89,7 +89,6 @@
             font-size: 0.8rem;
             margin-top: -10px;
             margin-bottom: 15px;
-            display: none; /* 기본 숨김 */
         }
 
         /* 취소 버튼 스타일 추가 */
@@ -128,15 +127,21 @@
             비밀번호를 다시 한번 입력해 주세요.
         </p>
 
-        <form th:action="@{/member/mypage/memberModifyCheckPW}" method="post" th:object="${checkPWMember}">
+        <form th:action="@{/member/mypage/memberModifyCheckPW(memberId=${param.memberId})}" method="post" th:object="${checkPWMember}">
+
+            <div class="text-danger mb-3" id="globalErrorMsg" th:if="${#fields.hasGlobalErrors()}"
+                 th:each="error : ${#fields.globalErrors()}" th:text="${error}">
+                글로벌 오류 메시지(비밀번호 에러)
+            </div>
+
             <div class="user-info">
-                아이디 : <span th:field="*{id}" th:text="*{id}">user1234</span>
+                아이디 : <span th:field="*{id}" th:text="${param.memberId}">user1234</span>
             </div>
 
             <div class="form-group">
-                <input type="password" name="password" class="form-control" th:field="*{password}" placeholder="비밀번호" required autofocus
-                th:errorclass="input-error">
+                <input type="password" name="password" class="form-control" th:field="*{password}" placeholder="비밀번호" th:errorclass="input-error">
                 <div class="error-msg" id="errorMsg" th:errors="*{password}">비밀번호 에러 메시지</div>
+                <div></div>
             </div>
 
             <div class="row no-gutters">
@@ -144,21 +149,13 @@
                     <button type="submit" class="btn btn-confirm btn-block">확인</button>
                 </div>
                 <div class="col-6 pl-1">
-                    <button type="button" class="btn btn-cancel btn-block" onclick="history.back()">취소</button>
+                    <button type="button" class="btn btn-cancel btn-block" th:onclick="|location.href='@{/home}'|">취소</button>
                 </div>
+                <div></div>
             </div>
         </form>
     </div>
 </div>
-
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script>
-    // URL에 error 파라미터가 있을 경우 에러 메시지 표시 로직 (예시)
-    const urlParams = new URLSearchParams(window.location.search);
-    if (urlParams.has('error')) {
-        document.getElementById('errorMsg').style.display = 'block';
-    }
-</script>
 
 </body>
 </html>

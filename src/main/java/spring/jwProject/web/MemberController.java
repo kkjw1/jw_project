@@ -1,10 +1,9 @@
-package spring.jwProject.web.member;
+package spring.jwProject.web;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.Banner;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -18,7 +17,6 @@ import spring.jwProject.validation.form.CheckPWMember;
 import spring.jwProject.validation.form.LoginMember;
 import spring.jwProject.validation.form.SignUpMember;
 import spring.jwProject.validation.form.UpdateMember;
-import spring.jwProject.web.SessionConst;
 
 @Slf4j
 @Controller
@@ -126,23 +124,22 @@ public class MemberController {
 
     @PostMapping("/mypage/memberModifyCheckPW")
     public String memberModifyCheckPW(@Validated @ModelAttribute CheckPWMember checkPWMember, BindingResult bindingResult,
-                                      Model model, RedirectAttributes redirectAttributes) {
+                                      Model model, RedirectAttributes redirectAttributes, @RequestParam("memberId") String memberId) {
 
         if (bindingResult.hasErrors()) {
-            log.info("memberModifyCheckPW Error");
             return "member/member_modify_checkPW";
         }
-        // 비밀번호 같은지 체크
+
         System.out.println("!!!!!!!!" + checkPWMember.getId() + checkPWMember.getPassword());
+        checkPWMember.setId(memberId);
         Member checkMember = service.login(checkPWMember.getId(), checkPWMember.getPassword());
-        // 비밀번호 에러
+
         if (checkMember == null) {
             log.info("memberModifyCheckPW Error");
             bindingResult.reject("CheckPWError", "비밀번호 체크 에러");
-            model.addAttribute("checkPWMember", checkPWMember);
             return "member/member_modify_checkPW";
         }
-        // 비밀번호 성공
+
         redirectAttributes.addAttribute("memberId", checkPWMember.getId());
         return "redirect:/member/mypage/memberModify";
     }
