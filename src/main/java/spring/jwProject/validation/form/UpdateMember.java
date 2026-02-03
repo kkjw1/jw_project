@@ -19,26 +19,21 @@ public class UpdateMember {
     private String email;
 
     private String password;
-    private String passwordCheck;
 
     @NotNull(message = "통신사가 공백입니다.")
     private String telecom;
-
-
     @NotNull(message = "휴대전화번호가 공백입니다.")
     private String phoneNumber;
 
     private Gender gender;
 
-
     public UpdateMember() {
     }
 
-    public UpdateMember(String id, String name, String email, String password, String telecom, String phoneNumber, Gender gender) {
+    public UpdateMember(String id, String name, String email, String telecom, String phoneNumber, Gender gender) {
         this.id = id;
         this.name = name;
         this.email = email;
-        this.password = password;
         this.telecom = telecom;
         this.phoneNumber = phoneNumber;
         this.gender = gender;

@@ -24,9 +24,9 @@ class MemberServiceTest {
     public void loginTest() throws Exception {
         //given
         Member member1 = new Member("member1", "member1@Email.com", "password", "name", Gender.MAN, "SKT",
-                "010-1234-1234", "12345", "roadAddress", "detailAddress");
+                "010-1234-1234");
         Member member2 = new Member("member2", "member2@Email.com", "password", "name", Gender.WOMAN, "SKT",
-                "010-1234-1234", "12345", "roadAddress", "detailAddress");
+                "010-1234-1234");
         em.persist(member1);
         em.persist(member2);
         em.flush();

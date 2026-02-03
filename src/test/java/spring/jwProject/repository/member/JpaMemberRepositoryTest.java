@@ -29,9 +29,9 @@ class JpaMemberRepositoryTest {
     public void signUpTest() throws Exception {
         //given
         Member member1 = new Member("member1", "member1@Email.com", "password", "name", Gender.MAN, "SKT",
-                "010-1234-1234", "12345", "roadAddress", "detailAddress");
+                "010-1234-1234");
         Member member2 = new Member("member2", "member2@Email.com", "password", "name", Gender.WOMAN, "SKT",
-                "010-1234-1234", "12345", "roadAddress", "detailAddress");
+                "010-1234-1234");
 
         //when
         Member savedMember1 = repository.save(member1);
@@ -47,9 +47,9 @@ class JpaMemberRepositoryTest {
     public void findByIdTest() throws Exception {
         //given
         Member member1 = new Member("member1", "member1@Email.com", "password", "name", Gender.MAN, "SKT",
-                "010-1234-1234", "12345", "roadAddress", "detailAddress");
+                "010-1234-1234");
         Member member2 = new Member("member2", "member2@Email.com", "password", "name", Gender.WOMAN, "SKT",
-                "010-1234-1234", "12345", "roadAddress", "detailAddress");
+                "010-1234-1234");
         em.persist(member1);
         em.persist(member2);
         em.flush();
@@ -72,9 +72,9 @@ class JpaMemberRepositoryTest {
     public void updateTest() throws Exception {
         //given
         Member member1 = new Member("member1", "member1@Email.com", "password", "name", Gender.MAN, "SKT",
-                "010-1234-1234", "12345", "roadAddress", "detailAddress");
+                "010-1234-1234");
         Member member2 = new Member("member2", "member2@Email.com", "password", "name", Gender.WOMAN, "SKT",
-                "010-1234-1234", "12345", "roadAddress", "detailAddress");
+                "010-1234-1234");
         em.persist(member1);
         em.persist(member2);
         em.flush();
@@ -82,13 +82,13 @@ class JpaMemberRepositoryTest {
 
         //when
         log.info("업데이트 성공");
-        UpdateMember updateMember = new UpdateMember("member1", "update", "update", "update", "update", "update", Gender.MAN);
+        UpdateMember updateMember = new UpdateMember("member1", "update", "update", "update", "update", Gender.MAN);
         Member update = repository.update(updateMember);
         Assertions.assertThat(update.getName()).isEqualTo("update");
 
 
         log.info("업데이트 실패");
-        UpdateMember updateMember2 = new UpdateMember("member3", "update", "update", "update", "update", "update", Gender.MAN);
+        UpdateMember updateMember2 = new UpdateMember("member3", "update", "update", "update", "update", Gender.MAN);
         Member update1 = repository.update(updateMember2);
         Assertions.assertThat(update1).isNull();
 

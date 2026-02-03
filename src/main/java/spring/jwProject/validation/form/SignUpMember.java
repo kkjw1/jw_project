@@ -5,10 +5,12 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import spring.jwProject.domain.member.Gender;
 import spring.jwProject.domain.member.MemberLevel;
 
-@Data
+@Getter @Setter
 public class SignUpMember {
 
     @NotBlank(message = "아이디가 공백입니다.")

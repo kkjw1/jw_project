@@ -10,8 +10,10 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import spring.jwProject.domain.address.Address;
 import spring.jwProject.domain.member.Member;
 import spring.jwProject.repository.member.MemberRepository;
+import spring.jwProject.sevice.AddressService;
 import spring.jwProject.sevice.MemberService;
 import spring.jwProject.validation.form.CheckPWMember;
 import spring.jwProject.validation.form.LoginMember;
@@ -24,8 +26,10 @@ import spring.jwProject.validation.form.UpdateMember;
 @RequestMapping("/member")
 public class MemberController {
 
-    private final MemberService service;
-    private final MemberRepository repository;
+    private final MemberService memberService;
+    private final MemberRepository memberRepository;
+    private final AddressService addressService;
+
     // 로그인 페이지
     @GetMapping("/login")
     public String loginForm(Model model) {
@@ -49,16 +53,16 @@ public class MemberController {
             return "member/login";
         }
 
-        Member login = service.login(member.getId(), member.getPassword());
-        log.info("login member={}",login);
+        Member login = memberService.login(member.getId(), member.getPassword());
 
         if (login == null) {
             bindingResult.reject("loginError", "로그인 에러메시지");
             return "member/login";
         }
 
+        log.info("login id:{}, name:{}",login.getId(), login.getNo());
         HttpSession session = request.getSession();
-        session.setAttribute(SessionConst.LOGIN_MEMBER, login);
+        session.setAttribute(SessionConst.LOGIN_MEMBER, new LoginMember(login.getId(), login.getName()));
         return "redirect:/";
     }
 
@@ -82,7 +86,7 @@ public class MemberController {
     @GetMapping("/signup/checkId")
     @ResponseBody
     public boolean checkDuplicateId(@RequestParam("id") String id) {
-        return service.checkId(id);
+        return memberService.checkId(id);
     }
 
     //회원가입
@@ -95,20 +99,25 @@ public class MemberController {
             return "member/signup";
         }
 
-        Member signedMember = service.signUp(new Member(
+        Member signedMember = memberService.signUp(new Member(
                 signUpMember.getId(),
                 signUpMember.getEmail(),
                 signUpMember.getPassword(),
                 signUpMember.getName(),
                 signUpMember.getGender(),
                 signUpMember.getTelecom(),
-                signUpMember.getPhoneNumber(),
-                signUpMember.getPostcode(),
-                signUpMember.getRoadAddress(),
-                signUpMember.getDetailAddress()));
-
-        log.info("signUp complete, Member={}",signedMember);
+                signUpMember.getPhoneNumber()));
         redirectAttributes.addAttribute("loginId", signedMember.getId());
+
+        if (!signUpMember.getPostcode().isEmpty()) {
+            addressService.save(new Address(signedMember,
+                    "기본배송지",
+                    signUpMember.getPostcode(),
+                    signUpMember.getRoadAddress(),
+                    signUpMember.getDetailAddress()));
+        }
+
+        log.info("signUp complete, Member={}",signUpMember);
         return "redirect:/member/login/{loginId}";
     }
 
@@ -132,7 +141,7 @@ public class MemberController {
 
         System.out.println("!!!!!!!!" + checkPWMember.getId() + checkPWMember.getPassword());
         checkPWMember.setId(memberId);
-        Member checkMember = service.login(checkPWMember.getId(), checkPWMember.getPassword());
+        Member checkMember = memberService.login(checkPWMember.getId(), checkPWMember.getPassword());
 
         if (checkMember == null) {
             log.info("memberModifyCheckPW Error");
@@ -147,11 +156,22 @@ public class MemberController {
 
     //개인정보수정
     @GetMapping("/mypage/memberModify")
-    public String memberModifyForm(@RequestParam("memberId") String memberId, Model model) {
-        Member member = repository.findById(memberId);
-        UpdateMember updateMember = new UpdateMember(member.getId(), member.getName(), member.getEmail(), member.getPassword(), member.getTelecom(), member.getPhoneNumber(), member.getGender());
+    public String memberModifyForm(@RequestParam("memberId") String memberId, Model model, HttpServletRequest request,
+                                   RedirectAttributes redirectAttributes) {
+
+        if (!new LoginMember().loginCheck(request, model)) {
+            return "redirect:/member/login?redirectURL=" + request.getRequestURI();
+        }
+
+        //todo: 개인정보 확인/수정 페이지 - 로그인 한 정보 뜨는 기능부터 시작
+
+        Member member = memberRepository.findById(memberId);
+        UpdateMember updateMember = new UpdateMember(member.getId(), member.getName(), member.getEmail(), member.getTelecom(), member.getPhoneNumber(), member.getGender());
 
         model.addAttribute("member", updateMember);
+
+
+
         return "member/member_modify";
     }
 

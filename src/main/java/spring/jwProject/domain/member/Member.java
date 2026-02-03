@@ -3,6 +3,10 @@ package spring.jwProject.domain.member;
 import jakarta.persistence.*;
 import lombok.Getter;
 import spring.jwProject.domain.BaseEntity;
+import spring.jwProject.domain.address.Address;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -18,25 +22,22 @@ public class Member extends BaseEntity {
     private String password;
     private String name;
 
-    @Enumerated(EnumType.STRING)
-    private Gender gender;
-
     private String telecom;
     private String phoneNumber;
 
-    // 기본배송지
-    private String postcode;
-    private String roadAddress;
-    private String detailAddress;
+    @Enumerated(EnumType.STRING)
+    private Gender gender;
 
     @Enumerated(EnumType.STRING)
-    private MemberLevel level;
+    private MemberLevel memberLevel;
 
+    @OneToMany(mappedBy = "member")
+    private List<Address> addresses = new ArrayList<>();
 
     public Member() {
     }
 
-    public Member(String id, String email, String password, String name, Gender gender, String telecom, String phoneNumber, String postcode, String roadAddress, String detailAddress) {
+    public Member(String id, String email, String password, String name, Gender gender, String telecom, String phoneNumber) {
         this.id = id;
         this.email = email;
         this.password = password;
@@ -44,10 +45,7 @@ public class Member extends BaseEntity {
         this.gender = gender;
         this.telecom = telecom;
         this.phoneNumber = phoneNumber;
-        this.postcode = postcode;
-        this.roadAddress = roadAddress;
-        this.detailAddress = detailAddress;
-        this.level = MemberLevel.NORMAL;
+        this.memberLevel = MemberLevel.NORMAL;
     }
 
     public boolean passwordEquals(String password) {
@@ -78,13 +76,7 @@ public class Member extends BaseEntity {
         this.phoneNumber = phoneNumber;
     }
 
-    public void updateMainAddress(String postcode, String roadAddress, String detailAddress) {
-        this.postcode = postcode;
-        this.roadAddress = roadAddress;
-        this.detailAddress = detailAddress;
-    }
-
-    public void updateLevel(MemberLevel level) {
-        this.level = level;
+    public void updateMemberLevel(MemberLevel memberLevel) {
+        this.memberLevel = memberLevel;
     }
 }

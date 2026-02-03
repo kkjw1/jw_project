@@ -32,22 +32,8 @@ public class HomeController {
     @RequestMapping({"/", "/home"})
     public String home(HttpServletRequest request, Model model) {
 
-        HttpSession session = request.getSession(false);
+        new LoginMember().loginCheck(request, model);
 
-        if (session == null) {
-            return "home/home";
-        }
-
-        Member loginMember = (Member) session.getAttribute(LOGIN_MEMBER);
-
-        if (loginMember == null) {
-            model.addAttribute("isLogin", false);
-            return "home/home";
-        }
-
-
-        model.addAttribute("member", loginMember);
-        model.addAttribute("isLogin", true);
         return "home/home";
     }
 
@@ -103,12 +89,12 @@ public class HomeController {
     @PostConstruct
     public void init() {
         Member member1 = new Member("member1", "member1@Email.com", "password", "회원1", Gender.MAN, "SKT",
-                "010-1234-1234", "12345", "roadAddress", "detailAddress");
+                "010-1234-1234");
         Member member2 = new Member("member2", "member2@Email.com", "password", "회원2", Gender.WOMAN, "SKT",
-                "010-1111-2222", "12345", "roadAddress", "detailAddress");
+                "010-1111-2222");
 
         Member test = new Member("test", "member2@Email.com", "test", "회원2", Gender.WOMAN, "SKT",
-                "010-1111-2222", "12345", "roadAddress", "detailAddress");
+                "010-1111-2222");
         service.signUp(member1);
         service.signUp(member2);
         service.signUp(test);
