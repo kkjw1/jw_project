@@ -19,6 +19,7 @@ public class UpdateMember {
     private String email;
 
     private String password;
+    private String checkPassword;
 
     @NotNull(message = "통신사가 공백입니다.")
     private String telecom;
@@ -30,10 +31,11 @@ public class UpdateMember {
     public UpdateMember() {
     }
 
-    public UpdateMember(String id, String name, String email, String telecom, String phoneNumber, Gender gender) {
+    public UpdateMember(String id, String name, String email, String password, String telecom, String phoneNumber, Gender gender) {
         this.id = id;
         this.name = name;
         this.email = email;
+        this.password = password;
         this.telecom = telecom;
         this.phoneNumber = phoneNumber;
         this.gender = gender;

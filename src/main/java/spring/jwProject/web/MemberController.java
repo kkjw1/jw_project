@@ -11,6 +11,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import spring.jwProject.domain.address.Address;
+import spring.jwProject.domain.member.Gender;
 import spring.jwProject.domain.member.Member;
 import spring.jwProject.repository.member.MemberRepository;
 import spring.jwProject.sevice.AddressService;
@@ -19,6 +20,9 @@ import spring.jwProject.validation.form.CheckPWMember;
 import spring.jwProject.validation.form.LoginMember;
 import spring.jwProject.validation.form.SignUpMember;
 import spring.jwProject.validation.form.UpdateMember;
+
+import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @Controller
@@ -156,48 +160,59 @@ public class MemberController {
 
     //개인정보수정
     @GetMapping("/mypage/memberModify")
-    public String memberModifyForm(@RequestParam("memberId") String memberId, Model model, HttpServletRequest request,
-                                   RedirectAttributes redirectAttributes) {
+    public String memberModifyForm(@RequestParam("memberId") String memberId, Model model, HttpServletRequest request) {
 
         if (!new LoginMember().loginCheck(request, model)) {
             return "redirect:/member/login?redirectURL=" + request.getRequestURI();
         }
 
-        //todo: 개인정보 확인/수정 페이지 - 로그인 한 정보 뜨는 기능부터 시작
-
         Member member = memberRepository.findById(memberId);
-        UpdateMember updateMember = new UpdateMember(member.getId(), member.getName(), member.getEmail(), member.getTelecom(), member.getPhoneNumber(), member.getGender());
-
-        model.addAttribute("member", updateMember);
-
-
+        UpdateMember updateMember = new UpdateMember(member.getId(),
+                member.getName(),
+                member.getEmail(),
+                member.getPassword(),
+                member.getTelecom(),
+                member.getPhoneNumber(),
+                member.getGender());
+        model.addAttribute("updateMember", updateMember);
 
         return "member/member_modify";
     }
 
-/*
     @PostMapping("/mypage/memberModify")
-    public String myPageUpdate(@Validated @ModelAttribute("member") UpdateMember updateMember, BindingResult bindingResult) {
+    public String memberModify(@Validated @ModelAttribute("updateMember") UpdateMember updateMember, BindingResult bindingResult,
+                               RedirectAttributes redirectAttributes) {
+
         if (bindingResult.hasErrors()) {
             log.info("myPageUpdate Fail={}", bindingResult);
-            return "member/memberModify";
+            return "member/member_modify";
         }
 
-        BeforeMember member = repository.findById(updateMember.getMemberId()).orElse(null);
-        member.setMemberName(updateMember.getMemberName());
+        if (!updateMember.getPassword().isEmpty()) {
 
-        member.setPostcode(updateMember.getPostcode());
-        member.setDetailAddress(updateMember.getDetailAddress());
-        member.setExtraAddress(updateMember.getExtraAddress());
-        member.setRoadAddress(updateMember.getRoadAddress());
-        member.setJibunAddress(updateMember.getJibunAddress());
-
-        service.updateMember(member);
-
-        return "redirect:/";
+        }
+/*        for (String s : result.keySet()) {
+            redirectAttributes.addAttribute(s, result.get(s));
+        }*/
+        //<필드명, 변경값>
+        Map<String, String> result = memberService.memberModify(updateMember);
+        redirectAttributes.addAttribute("result", result);
+        redirectAttributes.addAttribute("memberId", updateMember.getId());
+        return "redirect:/member/mypage/memberModify/complete";
     }
 
 
+    @GetMapping("/mypage/memberModify/complete")
+    public String memberModifyComplete(@RequestParam("memberId") String memberId, @RequestParam Map<String, String> result,
+                                       Model model) {
+
+        //변경한 것만 뜨게
+        model.addAttribute("result", result);
+        // 처음내용을 기억하고 있어야 함, 변경된 내용을
+        return "member/member_modify_complete";
+    }
+
+/*
     @GetMapping("/delete")
     public String delete(@RequestParam("memberId") String memberId, HttpServletRequest request) {
         log.info("delete member={}", memberId);

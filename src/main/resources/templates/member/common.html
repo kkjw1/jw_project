@@ -4,6 +4,25 @@
     <meta charset="UTF-8">
 
     <style th:fragment="style">
+
+        body { background-color: #f0f1f4; color: #333; }
+        .mypage-header { background-color: #fff; border-bottom: 1px solid #ddd; padding: 20px 0; }
+
+        /* 수정 폼 스타일 */
+        .edit-form-container { background: #fff; border: 1px solid #ddd; border-radius: 8px; padding: 40px; }
+        .form-group label { font-weight: bold; font-size: 0.9rem; color: #555; }
+        .form-control:focus { border-color: #4285f4; box-shadow: 0 0 0 0.2rem rgba(66, 133, 244, 0.1); }
+
+        .readonly-input { background-color: #f8f9fa !important; cursor: not-allowed; }
+        .btn-update { background-color: #4285f4; color: white; font-weight: bold; height: 50px; font-size: 1.1rem; }
+        .btn-update:hover { background-color: #357abd; color: white; }
+        .required-mark { color: #ae0000; margin-left: 2px; }
+
+        .input-error {
+            border-color: #dc3545 !important;
+            color: #dc3545;
+        }
+
         /* 최상단 유틸리티 바 (로그인/회원가입) */
         .top-utility-bar {
             font-size: 12px;

@@ -82,13 +82,13 @@ class JpaMemberRepositoryTest {
 
         //when
         log.info("업데이트 성공");
-        UpdateMember updateMember = new UpdateMember("member1", "update", "update", "update", "update", Gender.MAN);
+        UpdateMember updateMember = new UpdateMember("member1", "update", "update", "update","update", "update", Gender.MAN);
         Member update = repository.update(updateMember);
         Assertions.assertThat(update.getName()).isEqualTo("update");
 
 
         log.info("업데이트 실패");
-        UpdateMember updateMember2 = new UpdateMember("member3", "update", "update", "update", "update", Gender.MAN);
+        UpdateMember updateMember2 = new UpdateMember("member3", "update", "update","update", "update", "update", Gender.MAN);
         Member update1 = repository.update(updateMember2);
         Assertions.assertThat(update1).isNull();
 

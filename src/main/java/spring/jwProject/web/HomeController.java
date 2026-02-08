@@ -90,10 +90,10 @@ public class HomeController {
     public void init() {
         Member member1 = new Member("member1", "member1@Email.com", "password", "회원1", Gender.MAN, "SKT",
                 "010-1234-1234");
-        Member member2 = new Member("member2", "member2@Email.com", "password", "회원2", Gender.WOMAN, "SKT",
+        Member member2 = new Member("member2", "member2@Email.com", "password", "회원2", Gender.WOMAN, "KT",
                 "010-1111-2222");
 
-        Member test = new Member("test", "member2@Email.com", "test", "회원2", Gender.WOMAN, "SKT",
+        Member test = new Member("test", "member2@Email.com", "test", "회원2", Gender.WOMAN, "KT알뜰폰",
                 "010-1111-2222");
         service.signUp(member1);
         service.signUp(member2);
