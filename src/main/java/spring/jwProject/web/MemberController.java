@@ -3,6 +3,7 @@ package spring.jwProject.web;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.java.Log;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -181,31 +182,36 @@ public class MemberController {
 
     @PostMapping("/mypage/memberModify")
     public String memberModify(@Validated @ModelAttribute("updateMember") UpdateMember updateMember, BindingResult bindingResult,
-                               RedirectAttributes redirectAttributes) {
+                               RedirectAttributes redirectAttributes, HttpServletRequest request) {
 
         if (bindingResult.hasErrors()) {
             log.info("myPageUpdate Fail={}", bindingResult);
             return "member/member_modify";
         }
 
-        if (!updateMember.getPassword().isEmpty()) {
+        //<변경된 필드명, 변경값>
+        Map<String, Object> result = memberService.memberModify(updateMember);
 
+        for (String key : result.keySet()) {
+            if (key.equals("name")) {
+                // 세션에 저장된 값 변경
+                HttpSession session = request.getSession();
+                LoginMember loginMember = (LoginMember) session.getAttribute(SessionConst.LOGIN_MEMBER);
+                loginMember.setName((String) result.get(key));
+            }
         }
-/*        for (String s : result.keySet()) {
-            redirectAttributes.addAttribute(s, result.get(s));
-        }*/
-        //<필드명, 변경값>
-        Map<String, String> result = memberService.memberModify(updateMember);
-        redirectAttributes.addAttribute("result", result);
+
+        redirectAttributes.addFlashAttribute("result", result);
         redirectAttributes.addAttribute("memberId", updateMember.getId());
         return "redirect:/member/mypage/memberModify/complete";
     }
 
 
     @GetMapping("/mypage/memberModify/complete")
-    public String memberModifyComplete(@RequestParam("memberId") String memberId, @RequestParam Map<String, String> result,
-                                       Model model) {
+    public String memberModifyComplete(@ModelAttribute("result") Map<String, String> result, BindingResult bindingResult,
+                                       @RequestParam("memberId") String memberId, Model model) {
 
+        log.info("memberId={}, result={}", memberId, result);
         //변경한 것만 뜨게
         model.addAttribute("result", result);
         // 처음내용을 기억하고 있어야 함, 변경된 내용을

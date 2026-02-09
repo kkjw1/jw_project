@@ -19,14 +19,31 @@
             <h2 class="card-title mb-4">변경이 완료되었습니다!</h2>
             <p class="text-muted mb-5">요청하신 정보가 아래와 같이 안전하게 수정되었습니다.</p>
 
-            <table class="table text-left mb-5" th:each="key : ${result.keySet()}">
-                <tbody>
-                <tr>
-                    <th class="border-top-0" th:text="${key}">필드명</th>
-                    <td class="border-top-0" th:text="${result.get(key)}">값</td>
-                </tr>
+            <table class="table text-left mb-5">
+                <tbody th:each="key : ${result.keySet()}">
+                    <tr>
+                        <th th:text="${key}">필드명</th>
+                        <td th:text="${result.get(key)}">값</td>
+                    </tr>
                 </tbody>
             </table>
+
+<!--            <table class="table text-left mb-5">
+                <tbody>
+                <tr>
+                    <th >성별</th>
+                    <td th:text="${member.gender.description}">남성</td>
+                </tr>
+                <tr>
+                    <th >통신사</th>
+                    <td th:text="${member.telecom}">LG U+</td>
+                </tr>
+                <tr>
+                    <th>test</th>
+                    <td th:text="${member.telecom}">LG U+</td>
+                </tr>
+                </tbody>
+            </table>-->
 
             <div class="d-grid gap-2">
                 <a th:href="@{/member/mypage/memberModify(memberId=${param.memberId})}" class="btn btn-primary btn-block btn-lg">확인</a>

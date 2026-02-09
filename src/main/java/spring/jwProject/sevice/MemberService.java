@@ -11,10 +11,7 @@ import spring.jwProject.repository.member.MemberRepository;
 import spring.jwProject.validation.form.UpdateMember;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Slf4j
@@ -63,7 +60,7 @@ public class MemberService {
      * @param updateMember
      * @return 성공:Map<필드명, 변경값>, 변경 X일 시 변경값은 공백(""),  실패:null
      */
-    public Map<String, String> memberModify(UpdateMember updateMember) {
+    public Map<String, Object> memberModify(UpdateMember updateMember) {
 
         Member member1 = repository.findById(updateMember.getId());
         if (member1 == null) {
@@ -71,6 +68,9 @@ public class MemberService {
         }
         UpdateMember beforeMember = memberToUpdateMember(member1);
 
+        if (updateMember.getPassword().isEmpty()) {
+            updateMember.setPassword(beforeMember.getPassword());
+        }
 
         Member member2 = repository.update(updateMember);
         if (member2 == null) {
@@ -79,20 +79,26 @@ public class MemberService {
         UpdateMember afterMember = memberToUpdateMember(member2);
 
 
-        log.info("beforeMember={}", beforeMember.getName());
-        log.info("afterMember={}", afterMember.getName());
+        log.info("beforeMember={}", beforeMember.getPassword());
+        log.info("afterMember={}", afterMember.getPassword());
 
 
         Field[] UpdateMemberFields = beforeMember.getClass().getDeclaredFields();
-        Map<String, String> result = new HashMap<>();
+        Map<String, Object> result = new HashMap<>();
 
         try {
             for (Field f : UpdateMemberFields) {
                 f.setAccessible(true);
-                if (f.get(beforeMember) != f.get(afterMember)) {
-                    result.put(f.getName(), (String) f.get(afterMember));
-                } else {
-                    result.put(f.getName(), "");
+                String fieldName = f.getName();
+                Object s1 = f.get(beforeMember);
+                Object s2 = f.get(afterMember);
+
+                if (fieldName.equals("checkPassword")) {
+                    continue;
+                }
+
+                if (!Objects.equals(s1,s2)) {
+                    result.put(f.getName(), s2);
                 }
             }
         } catch (Exception e) {
