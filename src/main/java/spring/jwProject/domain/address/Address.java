@@ -24,6 +24,8 @@ public class Address extends BaseEntity {
     private String postcode;
     private String roadAddress;
     private String detailAddress;
+    private String deliveryRequest;
+
 
     public Address() {
     }

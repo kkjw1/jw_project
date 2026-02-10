@@ -232,4 +232,30 @@ public class MemberController {
         log.info("delete fail memberId={}", memberId);
         return "redirect:/";
     }
+
+    //배송지 관리
+    @GetMapping("/mypage/addressManage")
+    public String addressForm(Model model) {
+        return "member/address_manage";
+    }
+
+
+
+    //주문 목록
+    @GetMapping("/mypage/orderList")
+    public String orderListForm(Model model) {
+        return "member/order_list";
+    }
+
+    //찜한 상품
+    @GetMapping("/mypage/wishlist")
+    public String wishlistForm(Model model) {
+        return "member/wishlist";
+    }
+
+    //취소 반품 교환 내역
+    @GetMapping("/mypage/exchange")
+    public String exchangeForm(Model model) {
+        return "member/exchange";
+    }
 }
