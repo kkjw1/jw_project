@@ -121,9 +121,10 @@ public class MemberService {
     /**
      * 회원 탈퇴
      * @param memberId
+     * @return 성공:true, 실패:false
      */
-    public void withdraw(String memberId) {
-
+    public boolean withdraw(String memberId) {
+        return repository.delete(memberId);
     }
 
 }

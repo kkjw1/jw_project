@@ -141,8 +141,10 @@
             <a href="#" th:href="@{/member/signup}">회원가입</a>
         </div>
         <div class="container d-flex justify-content-end" th:if="${isLogin}">
-            <a th:text="|${member.getName()} 님|" th:href="@{/member/mypage/memberModifyCheckPW(memberId=${member.getId()})}">닉네임</a>
-            <a href="#">로그아웃</a>
+            <a id="name" th:text="|${member.getName()} 님|" th:href="@{/member/mypage/memberModifyCheckPW(memberId=${member.getId()})}">닉네임</a>
+            <form id="logoutForm" th:action="@{/member/logout}" method="post">
+                <a href="javascript:void(0);" onclick="document.getElementById('logoutForm').submit();">로그아웃</a>
+            </form>
             <a href="#">판매자 가입</a>
         </div>
     </div>
@@ -237,8 +239,6 @@
         </div>
     </div>
 </footer>
-
-
 
 </body>
 </html>

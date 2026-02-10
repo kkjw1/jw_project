@@ -24,4 +24,11 @@ public interface MemberRepository {
      * @return 성공:Member, 실패:null
      */
     Member update(UpdateMember updateMember);
+
+    /**
+     * 회원 삭제
+     * @param memberId
+     * @return 성공:true, 실패:false
+     */
+    boolean delete(String memberId);
 }

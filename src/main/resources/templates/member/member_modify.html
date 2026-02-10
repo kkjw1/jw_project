@@ -253,7 +253,14 @@
                         <div class="col-sm-3"></div>
                         <div class="col-sm-9">
                             <button type="submit" class="btn btn-update btn-block" id="changeButton">수정하기</button>
-                            <button type="button" class="btn btn-link btn-block text-muted small mt-2">회원 탈퇴하기</button>
+                        </div>
+                    </div>
+                </form>
+                <form th:action="@{/member/delete(memberId=${updateMember.getId()})}" method="post">
+                    <div class="row">
+                        <div class="col-sm-3"></div>
+                        <div class="col-sm-9">
+                            <button type="submit" class="btn btn-link btn-block text-muted small mt-2">회원 탈퇴하기</button>
                         </div>
                     </div>
                 </form>

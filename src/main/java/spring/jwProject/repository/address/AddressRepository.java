@@ -1,4 +1,4 @@
-package spring.jwProject.repository.Address;
+package spring.jwProject.repository.address;
 
 import spring.jwProject.domain.address.Address;
 

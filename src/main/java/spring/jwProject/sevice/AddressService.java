@@ -3,7 +3,7 @@ package spring.jwProject.sevice;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import spring.jwProject.domain.address.Address;
-import spring.jwProject.repository.Address.AddressRepository;
+import spring.jwProject.repository.address.AddressRepository;
 
 @Service
 @RequiredArgsConstructor

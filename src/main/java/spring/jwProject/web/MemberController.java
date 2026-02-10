@@ -3,7 +3,6 @@ package spring.jwProject.web;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.java.Log;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,7 +11,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import spring.jwProject.domain.address.Address;
-import spring.jwProject.domain.member.Gender;
 import spring.jwProject.domain.member.Member;
 import spring.jwProject.repository.member.MemberRepository;
 import spring.jwProject.sevice.AddressService;
@@ -22,7 +20,6 @@ import spring.jwProject.validation.form.LoginMember;
 import spring.jwProject.validation.form.SignUpMember;
 import spring.jwProject.validation.form.UpdateMember;
 
-import java.util.List;
 import java.util.Map;
 
 @Slf4j
@@ -65,17 +62,22 @@ public class MemberController {
             return "member/login";
         }
 
-        log.info("login id:{}, name:{}",login.getId(), login.getNo());
+        log.info("login id:{}, name:{}",login.getId(), login.getName());
         HttpSession session = request.getSession();
         session.setAttribute(SessionConst.LOGIN_MEMBER, new LoginMember(login.getId(), login.getName()));
         return "redirect:/";
     }
 
 
-    @GetMapping("/logout")
+    @PostMapping("/logout")
     public String logout(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
-        session.invalidate();
+        if (session != null) {
+            LoginMember loginMember = (LoginMember) session.getAttribute(SessionConst.LOGIN_MEMBER);
+            log.info("logout id:{}, name:{}", loginMember.getId(), loginMember.getName());
+            session.invalidate();
+//            session.removeAttribute(SessionConst.LOGIN_MEMBER);
+        }
         return "redirect:/";
     }
 
@@ -208,56 +210,26 @@ public class MemberController {
 
 
     @GetMapping("/mypage/memberModify/complete")
-    public String memberModifyComplete(@ModelAttribute("result") Map<String, String> result, BindingResult bindingResult,
-                                       @RequestParam("memberId") String memberId, Model model) {
+    public String memberModifyCompleteForm(@ModelAttribute("result") Map<String, String> result, BindingResult bindingResult,
+                                           @RequestParam("memberId") String memberId, Model model) {
 
         log.info("memberId={}, result={}", memberId, result);
-        //변경한 것만 뜨게
         model.addAttribute("result", result);
-        // 처음내용을 기억하고 있어야 함, 변경된 내용을
         return "member/member_modify_complete";
     }
 
-/*
-    @GetMapping("/delete")
+    @PostMapping("/delete")
     public String delete(@RequestParam("memberId") String memberId, HttpServletRequest request) {
-        log.info("delete member={}", memberId);
-        service.withdraw(memberId);
-        HttpSession session = request.getSession(false);
-        session.invalidate();
+        boolean result = memberService.withdraw(memberId);
 
-        return "redirect:/";
-    }
-
-    //비밀번호 변경 페이지
-    @GetMapping("/changePw")
-    public String changePwForm(@RequestParam("memberId") String memberId, Model model) {
-        model.addAttribute("member", new ChangePwMember());
-        return "member/changePw";
-    }
-
-    //비밀번호 변경
-    @PostMapping("/changePw")
-    public String changePw(@RequestParam("memberId") String memberId,
-                           @Validated @ModelAttribute("member") ChangePwMember changePwMember, BindingResult bindingResult) {
-
-        if (bindingResult.hasErrors()) {
-            log.info("changePw Error={}", bindingResult);
-            return "member/changePw";
+        if (result) {
+            log.info("delete member={}", memberId);
+            HttpSession session = request.getSession(false);
+            session.invalidate();
+            return "redirect:/";
         }
 
-        if (!changePwMember.getPassword().equals(changePwMember.getPassword2())) {
-            log.info("password={} password2={}", changePwMember.getPassword(), changePwMember.getPassword2());
-            bindingResult.reject("PwCrossCheckError", "비밀번호 불일치 에러메시지");
-            log.info("changePw Error={}", bindingResult);
-            return "member/changePw";
-        }
-
-        BeforeMember member = repository.findById(memberId).orElse(null);
-        member.setPassword(changePwMember.getPassword());
-        service.updateMember(member);
-
+        log.info("delete fail memberId={}", memberId);
         return "redirect:/";
-    }*/
-
+    }
 }

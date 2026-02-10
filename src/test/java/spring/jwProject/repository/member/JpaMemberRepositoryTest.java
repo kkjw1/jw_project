@@ -64,6 +64,8 @@ class JpaMemberRepositoryTest {
         //then
         Assertions.assertThat(findMember).isNull();
         Assertions.assertThat(findMember2.getNo()).isEqualTo(member2.getNo());
+
+        //아이디 중복문제는 뷰쪽에서 처리함.
     }
 
     @Test
@@ -93,4 +95,32 @@ class JpaMemberRepositoryTest {
         Assertions.assertThat(update1).isNull();
 
     }
+    @Test
+    @DisplayName("회원삭제")
+    public void deleteMemberTest() throws Exception {
+        //given
+/*
+        Member member1 = new Member("member1", "member1@Email.com", "password", "name", Gender.MAN, "SKT",
+                "010-1234-1234");
+        Member member2 = new Member("member2", "member2@Email.com", "password", "name", Gender.WOMAN, "SKT",
+                "010-1234-1234");
+        em.persist(member1);
+        em.persist(member2);
+        em.flush();
+        em.clear();
+
+*/
+
+        log.info("삭제 성공 - 올바른 아이디");
+        boolean result1 = repository.delete("test");
+        Member deleteMember = repository.findById("test");
+        Assertions.assertThat(result1).isTrue();
+        Assertions.assertThat(deleteMember).isNull();
+
+        log.info("삭제 실패 - 없는 아이디");
+        boolean result2 = repository.delete("member3");
+        Assertions.assertThat(result2).isFalse();
+
+    }
+
 }

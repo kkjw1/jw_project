@@ -56,4 +56,15 @@ public class JpaMemberRepository implements MemberRepository {
         member.setLastModifiedDate(LocalDateTime.now());
         return member;
     }
+
+    @Override
+    public boolean delete(String memberId) {
+        int result = em.createQuery("delete from Member m where m.id =:memberId")
+                .setParameter("memberId", memberId)
+                .executeUpdate();
+        if (result == 1) {
+            return true;
+        }
+        return false;
+    }
 }
