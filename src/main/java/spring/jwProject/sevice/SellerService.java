@@ -2,6 +2,8 @@ package spring.jwProject.sevice;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.web.server.ConfigurableWebServerFactory;
+import org.springframework.boot.web.server.WebServerFactoryCustomizer;
 import org.springframework.stereotype.Component;
 import spring.jwProject.domain.member.Member;
 import spring.jwProject.domain.seller.Seller;

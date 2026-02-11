@@ -79,4 +79,8 @@ public class Member extends BaseEntity {
     public void updateMemberLevel(MemberLevel memberLevel) {
         this.memberLevel = memberLevel;
     }
+
+    public int addressCount() {
+        return this.addresses.size();
+    }
 }

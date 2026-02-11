@@ -117,7 +117,7 @@ public class MemberController {
         redirectAttributes.addAttribute("loginId", signedMember.getId());
 
         if (!signUpMember.getPostcode().isEmpty()) {
-            addressService.save(new Address(signedMember,
+            addressService.signUp(new Address(signedMember,
                     "기본배송지",
                     signUpMember.getPostcode(),
                     signUpMember.getRoadAddress(),

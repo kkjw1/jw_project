@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import spring.jwProject.domain.BeforeMember;
+import spring.jwProject.domain.address.Address;
 import spring.jwProject.domain.member.Member;
 import spring.jwProject.repository.member.MemberRepository;
 import spring.jwProject.validation.form.UpdateMember;

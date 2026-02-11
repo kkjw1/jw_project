@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import spring.jwProject.domain.address.Address;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Repository
 @Transactional
@@ -27,4 +28,10 @@ public class JpaAddressRepository implements AddressRepository {
         }
     }
 
+    @Override
+    public List<Address> findAddresses(String memberId) {
+        return em.createQuery("select a from Address a join fetch a.member where a.member.id =:memberId", Address.class)
+                .setParameter("memberId", memberId)
+                .getResultList();
+    }
 }

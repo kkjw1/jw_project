@@ -2,11 +2,30 @@ package spring.jwProject.repository.address;
 
 import spring.jwProject.domain.address.Address;
 
+import java.util.List;
+
 public interface AddressRepository {
     /**
      * 주소 저장
      * @param address
-     * @return
+     * @return 성공:address, 실패:exception
      */
     Address save(Address address);
+
+    /**
+     * 주소 리스트 불러오기
+     */
+    List<Address> findAddresses(String memberId);
+
+    /**
+     * 주소 수정
+     * @param address
+     */
+//    Address update(Address address);
+
+    /**
+     * 주소 삭제
+     * @param no
+     */
+//    boolean delete(String no);
 }
