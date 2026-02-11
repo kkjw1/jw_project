@@ -18,7 +18,7 @@ public class Item extends BaseEntity {
     @Column(name = "ITME_NO")
     private Long no;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "SELLER_NO")
     private Seller seller;
 

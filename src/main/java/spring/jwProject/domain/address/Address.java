@@ -14,7 +14,7 @@ public class Address extends BaseEntity {
     @Column(name = "ADDRESS_NO")
     private Long no;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "MEMBER_NO")
     private Member member;
 
@@ -37,5 +37,20 @@ public class Address extends BaseEntity {
         this.postcode = postcode;
         this.roadAddress = roadAddress;
         this.detailAddress = detailAddress;
+    }
+
+    public Address(Member member, String postcode, String roadAddress, String detailAddress) {
+        this.member = member;
+        this.postcode = postcode;
+        this.roadAddress = roadAddress;
+        this.detailAddress = detailAddress;
+    }
+
+    public void updateAddressName(String addressName) {
+        this.addressName = addressName;
+    }
+
+    public void updateMain(boolean mainAddress) {
+        this.mainAddress = mainAddress;
     }
 }

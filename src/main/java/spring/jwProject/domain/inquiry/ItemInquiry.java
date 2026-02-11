@@ -13,7 +13,7 @@ public class ItemInquiry extends BaseEntity {
     @Column(name = "ITEM_INQUIRY_NO")
     private Long no;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ITEM_NO")
     private Item item;
 

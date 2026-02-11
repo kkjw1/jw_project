@@ -16,10 +16,10 @@ public class Order extends BaseEntity {
     @Column(name = "ORDER_NO")
     private Long no;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "MEMBER_NO")
     private Member member;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ITEM_NO")
     private Item item;
     private OrderStatus orderStatus;

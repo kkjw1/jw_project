@@ -12,7 +12,7 @@ public class InquiryAnswer extends BaseEntity {
     @Column(name = "INQUIRY_ANSWER_NO")
     private Long no;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ITEM_INQUIEY_NO")
     private ItemInquiry itemInquiry;
     private String content;
