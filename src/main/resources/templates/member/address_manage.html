@@ -110,26 +110,31 @@
             </div>
             <div class="modal-body">
                 <form>
-                    <div class="form-group"><input type="text" class="form-control" placeholder="받는 사람"></div>
-                    <div class="form-group"><input type="tel" class="form-control" placeholder="휴대폰 번호"></div>
+                    <div class="form-group"><input type="text" class="form-control" placeholder="배송지 이름"></div>
+                    <div class="form-group"><input type="text" class="form-control" placeholder="받는 사람*"></div>
+                    <div class="form-group"><input type="tel" class="form-control" placeholder="휴대폰 번호*"></div>
                     <div class="form-group">
                         <div class="input-group">
-                            <input type="text" class="form-control" placeholder="우편번호">
+                            <input type="text" class="form-control" placeholder="우편번호*">
                             <div class="input-group-append"><button class="btn btn-outline-secondary">주소찾기</button></div>
                         </div>
                     </div>
-                    <div class="form-group"><input type="text" class="form-control" placeholder="주소"></div>
+                    <div class="form-group"><input type="text" class="form-control" placeholder="주소*"></div>
                     <div class="form-group"><input type="text" class="form-control" placeholder="상세주소"></div>
                     <div class="form-group"><input type="text" class="form-control" placeholder="배송 요청사항"></div>
-                    <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input" id="setDefault">
-                        <label class="custom-control-label" for="setDefault">기본 배송지로 저장</label>
+
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input" id="setDefault">
+                            <label class="custom-control-label" for="setDefault">기본 배송지로 저장</label>
+                        </div>
+                        <!--누르면 받는사람, 휴대폰 번호 채워주기-->
+                        <button type="button" class="btn btn-sm btn-outline-secondary">내정보 가져오기</button>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary btn-block">저장하기</button>
                     </div>
                 </form>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-primary btn-block">저장하기</button>
-            </div>
         </div>
     </div>
 </div>

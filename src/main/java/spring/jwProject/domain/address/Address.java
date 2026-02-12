@@ -19,7 +19,8 @@ public class Address extends BaseEntity {
     private Member member;
 
     private String addressName;
-
+    private String recipientName;
+    private String phoneNumber;
     // 기본배송지
     private String postcode;
     private String roadAddress;
@@ -31,12 +32,14 @@ public class Address extends BaseEntity {
     public Address() {
     }
 
-    public Address(Member member, String addressName, String postcode, String roadAddress, String detailAddress) {
+    public Address(Member member, String addressName, String postcode, String roadAddress, String detailAddress, String recipientName, String phoneNumber) {
         this.member = member;
         this.addressName = addressName;
         this.postcode = postcode;
         this.roadAddress = roadAddress;
         this.detailAddress = detailAddress;
+        this.recipientName = recipientName;
+        this.phoneNumber = phoneNumber;
     }
 
     public Address(Member member, String postcode, String roadAddress, String detailAddress) {

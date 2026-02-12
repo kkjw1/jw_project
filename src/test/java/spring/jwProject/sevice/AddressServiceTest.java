@@ -58,7 +58,7 @@ class AddressServiceTest {
         em.clear();
 
         //when
-        Address address1 = new Address(member1, "기본배송지", "12341", "경기 성남시 분당구", "test");
+        Address address1 = new Address(member1, "기본배송지", "12341", "경기 성남시 분당구", "test", "수령인 이름", "010-1111-1111");
 
         Address savedAddress = service.save(address1);
         Assertions.assertThat(savedAddress).isEqualTo(address1);

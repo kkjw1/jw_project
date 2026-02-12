@@ -121,7 +121,9 @@ public class MemberController {
                     "기본배송지",
                     signUpMember.getPostcode(),
                     signUpMember.getRoadAddress(),
-                    signUpMember.getDetailAddress()));
+                    signUpMember.getDetailAddress(),
+                    signUpMember.getName(),
+                    signUpMember.getPhoneNumber()));
         }
 
         log.info("signUp complete, Member={}",signUpMember);
