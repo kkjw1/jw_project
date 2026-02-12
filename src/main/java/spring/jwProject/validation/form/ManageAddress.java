@@ -3,6 +3,7 @@ package spring.jwProject.validation.form;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
+import spring.jwProject.domain.member.Member;
 
 @Getter @Setter
 public class ManageAddress {
@@ -13,14 +14,16 @@ public class ManageAddress {
     @NotBlank(message = "휴대폰 번호가 비어있습니다.")
     private String phoneNumber;
 
-    @NotBlank(message = "우편번호가 비어있습니다.")
+    @NotBlank(message = "주소가 비어있습니다.")
     private String postcode;
-    @NotBlank(message = "상세주소가 비어있습니다.")
+    @NotBlank(message = "주소가 비어있습니다.")
     private String roadAddress;
     private String detailAddress;
     private String deliveryRequest;
 
     private Boolean mainAddress;
+
+    private String memberId;
 
     public ManageAddress() {
     }

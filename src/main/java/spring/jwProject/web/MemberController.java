@@ -15,10 +15,7 @@ import spring.jwProject.domain.member.Member;
 import spring.jwProject.repository.member.MemberRepository;
 import spring.jwProject.sevice.AddressService;
 import spring.jwProject.sevice.MemberService;
-import spring.jwProject.validation.form.CheckPWMember;
-import spring.jwProject.validation.form.LoginMember;
-import spring.jwProject.validation.form.SignUpMember;
-import spring.jwProject.validation.form.UpdateMember;
+import spring.jwProject.validation.form.*;
 
 import java.util.Collections;
 import java.util.List;
@@ -254,6 +251,34 @@ public class MemberController {
         return "member/address_manage";
     }
 
+    @GetMapping("/mypage/addressManage/add")
+    public String addressAddForm(HttpServletRequest request, Model model) {
+        if (!new LoginMember().loginCheck(request, model)) {
+            return "redirect:/member/login?redirectURL=" + request.getRequestURI();
+        }
+        model.addAttribute("manageAddress", new ManageAddress());
+        return "member/address_manage_add";
+    }
+
+
+    @PostMapping("/mypage/addressManage/add")
+    public String addressAdd(@Validated @ModelAttribute("manageAddress") ManageAddress manageAddress, BindingResult bindingResult,
+                             @RequestParam("memberId") String memberId, RedirectAttributes redirectAttributes) {
+        manageAddress.setMemberId(memberId);
+        addressService.save(manageAddress);
+
+        redirectAttributes.addAttribute("memberId", memberId);
+        return "redirect:/member/mypage/addressManage";
+    }
+
+    //배송지 추가 페이지(내정보 가져오기)
+    @GetMapping("mypge/addressManage/add/memberInformation")
+    @ResponseBody
+    public Member getMemberInformation(@RequestParam("memberId") String memberId) {
+
+        //todo: 관련 기능 html에서 구현 해야됨
+        return memberRepository.findById(memberId);
+    }
 
 
     //주문 목록

@@ -14,6 +14,7 @@ public interface AddressRepository {
 
     /**
      * 주소 리스트 불러오기
+     * @return 성공:List<address>, 실패:빈리스트
      */
     List<Address> findAddresses(String memberId);
 

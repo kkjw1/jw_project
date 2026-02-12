@@ -4,13 +4,16 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import spring.jwProject.domain.address.Address;
 import spring.jwProject.repository.address.AddressRepository;
+import spring.jwProject.repository.member.MemberRepository;
+import spring.jwProject.validation.form.ManageAddress;
 
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class AddressService {
-    private final AddressRepository repository;
+    private final AddressRepository addressRepository;
+    private final MemberRepository memberRepository;
 
     /**
      * 회원가입시 주소 추가
@@ -19,8 +22,9 @@ public class AddressService {
      */
     public Address signUp(Address address) {
         address.updateMain(true);
-        return repository.save(address);
+        return addressRepository.save(address);
     }
+
 
     /**
      * 주소 추가
@@ -34,7 +38,33 @@ public class AddressService {
         if (address.getMainAddress() != true) {
             address.updateMain(false);
         }
-        return repository.save(address);
+        return addressRepository.save(address);
+    }
+
+    /**
+     * 주소 추가
+     * @param manageAddress
+     * @return 성공:address,실패:exception
+     */
+    public Address save(ManageAddress manageAddress) {
+        Address address = new Address(
+                memberRepository.findById(manageAddress.getMemberId()),
+                manageAddress.getAddressName(),
+                manageAddress.getRecipientName(),
+                manageAddress.getPhoneNumber(),
+                manageAddress.getPostcode(),
+                manageAddress.getRoadAddress(),
+                manageAddress.getDetailAddress(),
+                manageAddress.getDeliveryRequest(),
+                manageAddress.getMainAddress());
+
+        if (address.getAddressName().isEmpty()) {
+            address.updateAddressName(address.getRoadAddress());
+        }
+        if (address.getMainAddress() != true) {
+            address.updateMain(false);
+        }
+        return addressRepository.save(address);
     }
 
     /**
@@ -43,7 +73,7 @@ public class AddressService {
      * @return 성공:List<Address>, 실패:[]
      */
     public List<Address> getAddresses(String memberId) {
-        return repository.findAddresses(memberId);
+        return addressRepository.findAddresses(memberId);
     }
     // 주소 수정, 주소 삭제, 주소 변경
 }

@@ -12,6 +12,7 @@ import spring.jwProject.domain.address.Address;
 import spring.jwProject.domain.member.Gender;
 import spring.jwProject.domain.member.Member;
 import spring.jwProject.repository.address.AddressRepository;
+import spring.jwProject.validation.form.ManageAddress;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,10 +59,13 @@ class AddressServiceTest {
         em.clear();
 
         //when
-        Address address1 = new Address(member1, "기본배송지", "12341", "경기 성남시 분당구", "test", "수령인 이름", "010-1111-1111");
-
-        Address savedAddress = service.save(address1);
-        Assertions.assertThat(savedAddress).isEqualTo(address1);
+        ManageAddress address1 = new ManageAddress("기본배송지", "수령인이름","010-1111-2222",
+                "12341", "경기 성남시 분당구", "101동", "요청사항1", true);
+        address1.setMemberId("qqqq");
+        service.save(address1);
+        List<Address> savedAddress = repository.findAddresses("qqqq");
+        Assertions.assertThat(savedAddress.size()).isEqualTo(1);
+        Assertions.assertThat(savedAddress.get(0).getMember().getName()).isEqualTo("qqqq");
     }
 
     @Test
