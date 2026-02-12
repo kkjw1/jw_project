@@ -30,7 +30,7 @@ public class JpaAddressRepository implements AddressRepository {
 
     @Override
     public List<Address> findAddresses(String memberId) {
-        return em.createQuery("select a from Address a join fetch a.member where a.member.id =:memberId", Address.class)
+        return em.createQuery("select a from Address a join fetch a.member where a.member.id =:memberId order by a.mainAddress desc", Address.class)
                 .setParameter("memberId", memberId)
                 .getResultList();
     }

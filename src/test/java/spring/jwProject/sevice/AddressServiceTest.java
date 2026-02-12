@@ -36,7 +36,7 @@ class AddressServiceTest {
         //given
         Member member1 = new Member("qqqq", "qqqq", "qqqq", "qqqq", Gender.MAN, "SKT",
                 "010-1234-1234");
-        Address address1 = new Address(member1, "12341", "경기 성남시 분당구", "test");
+        Address address1 = new Address(member1, "12341", "경기 성남시 분당구", "test", "test", "test", "010-1111-2222");
 
         //when
         em.persist(member1);
@@ -72,12 +72,11 @@ class AddressServiceTest {
         Member m2 = new Member("wwww", "wwww", "wwww", "wwww", Gender.MAN, "KT", "010-2222-3333");
         em.persist(m1);
         em.persist(m2);
-        Address a1 = new Address(m1, "11111", "경기 성남시 분당구", "1번째 주소");
-        Address a2 = new Address(m1, "22222", "경기 성남시 분당구", "2번째 주소");
-        Address a3 = new Address(m1, "33333", "경기 성남시 분당구", "3번째 주소");
-        Address a4 = new Address(m2, "44444", "경기 성남시 분당구", "1번째 주소");
+        Address a1 = new Address(m1, "주소1", "사람1", "010-1111-1111", "11111", "경기 성남시 분당구", "101호", "요청사항1", false);
+        Address a3 = new Address(m1, "주소3", "사람3", "010-3333-3333", "33333", "경기 성남시 분당구", "303호", "요청사항3", false);
+        Address a4 = new Address(m2, "주소4", "사람4", "010-4444-4444", "44444", "경기 성남시 분당구", "404호", "요청사항4", false);
+
         em.persist(a1);
-        em.persist(a2);
         em.persist(a3);
         em.persist(a4);
         em.flush();
@@ -87,7 +86,7 @@ class AddressServiceTest {
         List<Address> addresses = repository.findAddresses(m1.getId());
 
         //then
-        Assertions.assertThat(addresses.size()).isEqualTo(3);
+        Assertions.assertThat(addresses.size()).isEqualTo(2);
         for (Address address : addresses) {
             log.info("address postcode: {}", address.getPostcode());
         }

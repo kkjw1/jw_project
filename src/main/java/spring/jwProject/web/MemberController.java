@@ -20,6 +20,8 @@ import spring.jwProject.validation.form.LoginMember;
 import spring.jwProject.validation.form.SignUpMember;
 import spring.jwProject.validation.form.UpdateMember;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 @Slf4j
@@ -147,8 +149,6 @@ public class MemberController {
         if (bindingResult.hasErrors()) {
             return "member/member_modify_checkPW";
         }
-
-        System.out.println("!!!!!!!!" + checkPWMember.getId() + checkPWMember.getPassword());
         checkPWMember.setId(memberId);
         Member checkMember = memberService.login(checkPWMember.getId(), checkPWMember.getPassword());
 
@@ -235,9 +235,22 @@ public class MemberController {
         return "redirect:/";
     }
 
-    //배송지 관리
+    //배송지 관리, /member/mypage/addressManage?memberId=test
     @GetMapping("/mypage/addressManage")
-    public String addressForm(Model model) {
+    public String addressForm(@RequestParam("memberId") String memberId, HttpServletRequest request,Model model) {
+        if (!new LoginMember().loginCheck(request, model)) {
+            return "redirect:/member/login?redirectURL=" + request.getRequestURI();
+        }
+        //주소 리스트 출력 기능
+        List<Address> addresses = addressService.getAddresses(memberId);
+        if (addresses.isEmpty()) {
+            model.addAttribute("addresses", Collections.emptyList());
+        } else {
+            Address mainAddress = addresses.get(0);
+            List<Address> addressesList = addresses.subList(1, addresses.size());
+            model.addAttribute("mainAddress", mainAddress);
+            model.addAttribute("addresses", addressesList);
+        }
         return "member/address_manage";
     }
 
