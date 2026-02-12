@@ -80,15 +80,15 @@
 
                     <div class="d-flex justify-content-between align-items-center mb-2">
                         <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" id="setDefault" value="true">
+                            <input type="checkbox" class="custom-control-input" id="setDefault" th:field="*{mainAddress}" value="true">
                             <label class="custom-control-label" for="setDefault">기본 배송지로 저장</label>
                         </div>
                         <button type="button" class="btn btn-sm btn-outline-secondary">내정보 가져오기</button>
                     </div>
 
-                    <div class="text-danger" th:errors="*{recipientName}" th:text="">받는사람 오류메시지</div>
-                    <div class="text-danger" th:errors="*{phoneNumber}" th:text="">휴대폰번호 오류메시지</div>
-                    <div class="text-danger" th:errors="*{postcode}" th:text="">주소 오류메시지</div>
+                    <div class="text-danger" th:errors="*{recipientName}">받는사람 오류메시지</div>
+                    <div class="text-danger" th:errors="*{phoneNumber}">휴대폰번호 오류메시지</div>
+                    <div class="text-danger" th:errors="*{postcode}">주소 오류메시지</div>
 
                     <div class="row mt-5">
                         <div class="col-6">

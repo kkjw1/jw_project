@@ -232,7 +232,8 @@ public class MemberController {
         return "redirect:/";
     }
 
-    //배송지 관리, /member/mypage/addressManage?memberId=test
+
+    //배송지 관리 페이지, /member/mypage/addressManage?memberId=test
     @GetMapping("/mypage/addressManage")
     public String addressForm(@RequestParam("memberId") String memberId, HttpServletRequest request,Model model) {
         if (!new LoginMember().loginCheck(request, model)) {
@@ -251,6 +252,8 @@ public class MemberController {
         return "member/address_manage";
     }
 
+
+    //배송지 추가 페이지
     @GetMapping("/mypage/addressManage/add")
     public String addressAddForm(HttpServletRequest request, Model model) {
         if (!new LoginMember().loginCheck(request, model)) {
@@ -259,19 +262,18 @@ public class MemberController {
         model.addAttribute("manageAddress", new ManageAddress());
         return "member/address_manage_add";
     }
-
-
+    //배송지 추가
     @PostMapping("/mypage/addressManage/add")
     public String addressAdd(@Validated @ModelAttribute("manageAddress") ManageAddress manageAddress, BindingResult bindingResult,
                              @RequestParam("memberId") String memberId, RedirectAttributes redirectAttributes) {
         manageAddress.setMemberId(memberId);
+        log.info("manageAddress.mainAddress={}", manageAddress.getMainAddress());
         addressService.save(manageAddress);
 
         redirectAttributes.addAttribute("memberId", memberId);
         return "redirect:/member/mypage/addressManage";
     }
-
-    //배송지 추가 페이지(내정보 가져오기)
+    //내정보 가져오기(배송지 추가 페이지)
     @GetMapping("mypge/addressManage/add/memberInformation")
     @ResponseBody
     public Member getMemberInformation(@RequestParam("memberId") String memberId) {
