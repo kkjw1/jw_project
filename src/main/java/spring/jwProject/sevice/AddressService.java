@@ -6,6 +6,7 @@ import spring.jwProject.domain.address.Address;
 import spring.jwProject.repository.address.AddressRepository;
 import spring.jwProject.repository.member.MemberRepository;
 import spring.jwProject.validation.form.ManageAddress;
+import spring.jwProject.validation.form.UpdateAddress;
 
 import java.util.List;
 
@@ -21,7 +22,7 @@ public class AddressService {
      * @return 성공:address,실패:exception
      */
     public Address signUp(Address address) {
-        address.updateMain(true);
+        address.updateMainAddress(true);
         return addressRepository.save(address);
     }
 
@@ -36,7 +37,7 @@ public class AddressService {
             address.updateAddressName(address.getRoadAddress());
         }
         if (address.getMainAddress() != true) {
-            address.updateMain(false);
+            address.updateMainAddress(false);
         }
         return addressRepository.save(address);
     }
@@ -66,7 +67,7 @@ public class AddressService {
             List<Address> mainAddress = addressRepository.findMainAddress(manageAddress.getMemberId());
             //기본배송지가 없는 경우
             if (!mainAddress.isEmpty()) {
-                mainAddress.get(0).updateMain(false);
+                mainAddress.get(0).updateMainAddress(false);
             }
         }
         return addressRepository.save(address);
@@ -80,7 +81,6 @@ public class AddressService {
     public List<Address> getAddresses(String memberId) {
         return addressRepository.findAddresses(memberId);
     }
-    // 주소 수정, 주소 삭제, 주소 변경
 
     /**
      * 주소 삭제
@@ -91,5 +91,12 @@ public class AddressService {
         return addressRepository.delete(no);
     }
 
-
+    /**
+     * 주소 변경
+     * @param updateAddress
+     * @return 성공:Address, 실패: exception
+     */
+    public Address addressModify(UpdateAddress updateAddress) {
+        return addressRepository.update(updateAddress);
+    }
 }

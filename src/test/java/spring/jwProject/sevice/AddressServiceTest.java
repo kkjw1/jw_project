@@ -13,6 +13,7 @@ import spring.jwProject.domain.member.Gender;
 import spring.jwProject.domain.member.Member;
 import spring.jwProject.repository.address.AddressRepository;
 import spring.jwProject.validation.form.ManageAddress;
+import spring.jwProject.validation.form.UpdateAddress;
 
 import java.util.List;
 
@@ -166,4 +167,59 @@ class AddressServiceTest {
         Assertions.assertThat(result2).isFalse();
         Assertions.assertThat(service.getAddresses("qqqq").size()).isEqualTo(1);
     }
+
+    @Test
+    @DisplayName("번호로 주소 찾기")
+    public void test7() throws Exception {
+        //given
+        Member m1 = new Member("qqqq", "qqqq", "qqqq", "qqqq", Gender.MAN, "SKT", "010-1234-1234");
+        Member m2 = new Member("wwww", "wwww", "wwww", "wwww", Gender.MAN, "KT", "010-2222-3333");
+        em.persist(m1);
+        em.persist(m2);
+        Address a1 = new Address(m1, "주소1", "사람1", "010-1111-1111", "11111", "경기 성남시 분당구", "101호", "요청사항1", false);
+        Address a3 = new Address(m1, "주소3", "사람3", "010-3333-3333", "33333", "경기 성남시 분당구", "303호", "요청사항3", false);
+        Address a4 = new Address(m2, "주소4", "사람4", "010-4444-4444", "44444", "경기 성남시 분당구", "404호", "요청사항4", false);
+        em.persist(a1);
+        em.persist(a3);
+        em.persist(a4);
+        em.flush();
+        em.clear();
+
+        //when
+        List<Address> addresses = service.getAddresses("qqqq");
+        Address address = addresses.get(0);
+        Address findAddress = repository.findByNo(address.getNo());
+
+        Assertions.assertThat(findAddress).isEqualTo(address);
+    }
+    
+    @Test
+    @DisplayName("주소 변경")
+    public void test8() throws Exception {
+        //given
+        Member m1 = new Member("qqqq", "qqqq", "qqqq", "qqqq", Gender.MAN, "SKT", "010-1234-1234");
+        Member m2 = new Member("wwww", "wwww", "wwww", "wwww", Gender.MAN, "KT", "010-2222-3333");
+        em.persist(m1);
+        em.persist(m2);
+        Address a1 = new Address(m1, "주소1", "사람1", "010-1111-1111", "11111", "경기 성남시 분당구", "101호", "요청사항1", false);
+        Address a3 = new Address(m1, "주소3", "사람3", "010-3333-3333", "33333", "경기 성남시 분당구", "303호", "요청사항3", false);
+        Address a4 = new Address(m2, "주소4", "사람4", "010-4444-4444", "44444", "경기 성남시 분당구", "404호", "요청사항4", false);
+        em.persist(a1);
+        em.persist(a3);
+        em.persist(a4);
+        em.flush();
+        em.clear();
+        UpdateAddress updateAddress = new UpdateAddress("변경", "변경", "010-9999-9999", "변경",
+                "변경", "변경", "변경");
+
+
+        //when
+        List<Address> addresses = service.getAddresses("qqqq");
+        updateAddress.setAddressNo(addresses.get(0).getNo());
+        Address address = service.addressModify(updateAddress);
+
+        Assertions.assertThat(address.getAddressName()).isEqualTo("변경");
+    }
+    
+    
 }

@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import spring.jwProject.domain.address.Address;
+import spring.jwProject.validation.form.UpdateAddress;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -36,10 +37,30 @@ public class JpaAddressRepository implements AddressRepository {
     }
 
     @Override
+    public Address findByNo(Long no) {
+        return em.createQuery("select a from Address a where a.no=:no", Address.class)
+                .setParameter("no", no)
+                .getSingleResult();
+    }
+
+    @Override
     public List<Address> findMainAddress(String memberId) {
         return em.createQuery("select a from Address a join fetch a.member where a.mainAddress = true and a.member.id =:memberId", Address.class)
                 .setParameter("memberId", memberId)
                 .getResultList();
+    }
+
+    @Override
+    public Address update(UpdateAddress updateAddress) {
+        Address findAddress = findByNo(updateAddress.getAddressNo());
+        findAddress.updateAddressName(updateAddress.getAddressName());
+        findAddress.updateRecipientName(updateAddress.getRecipientName());
+        findAddress.updatePhoneNumber(updateAddress.getPhoneNumber());
+        findAddress.updatePostcode(updateAddress.getPostcode());
+        findAddress.updateRoadAddress(updateAddress.getRoadAddress());
+        findAddress.updateDetailAddress(updateAddress.getDetailAddress());
+        findAddress.updateDeliveryRequest(updateAddress.getDeliveryRequest());
+        return findAddress;
     }
 
     @Override

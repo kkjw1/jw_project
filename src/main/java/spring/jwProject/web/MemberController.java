@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import spring.jwProject.domain.address.Address;
 import spring.jwProject.domain.member.Member;
+import spring.jwProject.repository.address.AddressRepository;
 import spring.jwProject.repository.member.MemberRepository;
 import spring.jwProject.sevice.AddressService;
 import spring.jwProject.sevice.MemberService;
@@ -31,6 +32,7 @@ public class MemberController {
     private final MemberService memberService;
     private final MemberRepository memberRepository;
     private final AddressService addressService;
+    private final AddressRepository addressRepository;
 
     // 로그인 페이지
     @GetMapping("/login")
@@ -305,6 +307,48 @@ public class MemberController {
         if (addressService.delete(addressNo)) {
             log.info("delete addressNo={}", addressNo);
         }
+        LoginMember loginMember = (LoginMember) request.getSession().getAttribute(SessionConst.LOGIN_MEMBER);
+        redirectAttributes.addAttribute("memberId", loginMember.getId());
+        return "redirect:/member/mypage/addressManage";
+    }
+
+    //배송지 수정 폼 /member/mypage/addressManage/update?addressNo=
+    @GetMapping("/mypage/addressManage/update")
+    public String addressUpdateForm(@RequestParam("addressNo") Long addressNo, Model model, HttpServletRequest request) {
+
+        if (!new LoginMember().loginCheck(request, model)) {
+            return "redirect:/member/login?redirectURL=" + request.getRequestURI();
+        }
+
+        Address address = addressRepository.findByNo(addressNo);
+        UpdateAddress updateAddress = new UpdateAddress(
+                address.getAddressName(),
+                address.getRecipientName(),
+                address.getPhoneNumber(),
+                address.getPostcode(),
+                address.getRoadAddress(),
+                address.getDetailAddress(),
+                address.getDeliveryRequest());
+
+        updateAddress.setAddressNo(addressNo);
+        model.addAttribute("updateAddress", updateAddress);
+        return "member/address_manage_update";
+    }
+
+    //배송지 수정
+    @PostMapping("/mypage/addressManage/update")
+    public String addressUpdate(@Validated @ModelAttribute("updateAddress") UpdateAddress updateAddress, BindingResult bindingResult,
+            @RequestParam("addressNo") Long addressNo, RedirectAttributes redirectAttributes, HttpServletRequest request, Model model) {
+
+        if(bindingResult.hasErrors()) {
+            log.info("Address Update Error no={}", addressNo);
+            new LoginMember().loginCheck(request, model);
+            return "member/address_manage_update";
+        }
+
+        updateAddress.setAddressNo(addressNo);
+        addressService.addressModify(updateAddress);
+
         LoginMember loginMember = (LoginMember) request.getSession().getAttribute(SessionConst.LOGIN_MEMBER);
         redirectAttributes.addAttribute("memberId", loginMember.getId());
         return "redirect:/member/mypage/addressManage";

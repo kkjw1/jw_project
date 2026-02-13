@@ -29,6 +29,38 @@ public class Address extends BaseEntity {
     private Boolean mainAddress;
 
 
+    public void updateAddressName(String addressName) {
+        this.addressName = addressName;
+    }
+
+    public void updateRecipientName(String recipientName) {
+        this.recipientName = recipientName;
+    }
+
+    public void updatePhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public void updatePostcode(String postcode) {
+        this.postcode = postcode;
+    }
+
+    public void updateRoadAddress(String roadAddress) {
+        this.roadAddress = roadAddress;
+    }
+
+    public void updateDetailAddress(String detailAddress) {
+        this.detailAddress = detailAddress;
+    }
+
+    public void updateDeliveryRequest(String deliveryRequest) {
+        this.deliveryRequest = deliveryRequest;
+    }
+
+    public void updateMainAddress(Boolean mainAddress) {
+        this.mainAddress = mainAddress;
+    }
+
     public Address() {
     }
 
@@ -56,11 +88,4 @@ public class Address extends BaseEntity {
         this.mainAddress = mainAddress;
     }
 
-    public void updateAddressName(String addressName) {
-        this.addressName = addressName;
-    }
-
-    public void updateMain(boolean mainAddress) {
-        this.mainAddress = mainAddress;
-    }
 }
