@@ -17,6 +17,7 @@ import spring.jwProject.sevice.AddressService;
 import spring.jwProject.sevice.MemberService;
 import spring.jwProject.validation.form.*;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -262,10 +263,19 @@ public class MemberController {
         model.addAttribute("manageAddress", new ManageAddress());
         return "member/address_manage_add";
     }
+
+
     //배송지 추가
     @PostMapping("/mypage/addressManage/add")
     public String addressAdd(@Validated @ModelAttribute("manageAddress") ManageAddress manageAddress, BindingResult bindingResult,
-                             @RequestParam("memberId") String memberId, RedirectAttributes redirectAttributes) {
+                             @RequestParam("memberId") String memberId, RedirectAttributes redirectAttributes,
+                             HttpServletRequest request, Model model) {
+
+        if (bindingResult.hasErrors()) {
+            new LoginMember().loginCheck(request, model);
+            return "member/address_manage_add";
+        }
+
         manageAddress.setMemberId(memberId);
         log.info("manageAddress.mainAddress={}", manageAddress.getMainAddress());
         addressService.save(manageAddress);
@@ -273,13 +283,18 @@ public class MemberController {
         redirectAttributes.addAttribute("memberId", memberId);
         return "redirect:/member/mypage/addressManage";
     }
-    //내정보 가져오기(배송지 추가 페이지)
-    @GetMapping("mypge/addressManage/add/memberInformation")
-    @ResponseBody
-    public Member getMemberInformation(@RequestParam("memberId") String memberId) {
 
-        //todo: 관련 기능 html에서 구현 해야됨
-        return memberRepository.findById(memberId);
+    //내정보 가져오기(배송지 추가 페이지)
+    @GetMapping("mypage/addressManage/add/getMyInfo")
+    @ResponseBody
+    public List<String> getMyInfo(HttpServletRequest request) {
+        LoginMember loginMember = (LoginMember)request.getSession().getAttribute(SessionConst.LOGIN_MEMBER);
+        log.info("getMyInfo id={}", loginMember.getId());
+        Member member = memberRepository.findById(loginMember.getId());
+        List<String> list = new ArrayList<>();
+        list.add(member.getName());
+        list.add(member.getPhoneNumber());
+        return list;
     }
 
 

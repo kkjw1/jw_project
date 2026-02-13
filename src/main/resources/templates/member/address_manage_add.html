@@ -51,14 +51,14 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>받는 사람<span class="required-mark">*</span></label>
-                                <input type="text" class="form-control" th:field="*{recipientName}" th:errorclass="input-error" placeholder="수신인 이름">
+                                <input type="text" class="form-control" id="recipientName" th:field="*{recipientName}" th:errorclass="input-error" placeholder="수신인 이름">
                             </div>
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label>휴대폰 번호<span class="required-mark">*</span></label>
-                        <input type="tel" class="form-control" th:field="*{phoneNumber}" th:errorclass="input-error" placeholder="010-0000-0000" >
+                        <input type="tel" class="form-control" id="phoneNumber" th:field="*{phoneNumber}" th:errorclass="input-error" placeholder="010-0000-0000" >
                     </div>
 
                     <div class="form-group">
@@ -83,7 +83,7 @@
                             <input type="checkbox" class="custom-control-input" id="setDefault" th:field="*{mainAddress}" value="true">
                             <label class="custom-control-label" for="setDefault">기본 배송지로 저장</label>
                         </div>
-                        <button type="button" class="btn btn-sm btn-outline-secondary">내정보 가져오기</button>
+                        <button type="button" class="btn btn-sm btn-outline-secondary" onclick="getMyInfo()">내정보 가져오기</button>
                     </div>
 
                     <div class="text-danger" th:errors="*{recipientName}">받는사람 오류메시지</div>
@@ -119,6 +119,20 @@
             }
         }).open();
     }
+
+    function getMyInfo() {
+        const name = document.getElementById('recipientName');
+        const phone = document.getElementById('phoneNumber');
+
+        fetch(`/member/mypage/addressManage/add/getMyInfo`)
+            .then(res => res.json())
+            .then(list => {
+                name.value = list[0];
+                phone.value = list[1];
+            })
+            .catch(err => console.log("getMyInfo Error:", err))
+    }
+
 </script>
 
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
