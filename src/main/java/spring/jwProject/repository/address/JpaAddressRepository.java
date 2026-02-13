@@ -34,4 +34,22 @@ public class JpaAddressRepository implements AddressRepository {
                 .setParameter("memberId", memberId)
                 .getResultList();
     }
+
+    @Override
+    public Address findMainAddress(String memberId) {
+        return em.createQuery("select a from Address a join fetch a.member where a.mainAddress = true and a.member.id =:memberId", Address.class)
+                .setParameter("memberId", memberId)
+                .getSingleResult();
+    }
+
+    @Override
+    public boolean delete(Long no) {
+        int result = em.createQuery("delete from Address a where a.no=:no")
+                .setParameter("no", no)
+                .executeUpdate();
+        if (result == 1) {
+            return true;
+        }
+        return false;
+    }
 }

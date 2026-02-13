@@ -202,7 +202,9 @@
                             </div>
                             <div class="action-links">
                                 <a href="#">수정</a>
-                                <a href="#" class="text-danger">삭제</a>
+                                <form id="addressDelete" th:action="@{/member/mypage/addressManage/delete(addressNo=${mainAddress.getNo()})}" method="post">
+                                    <a href="javascript:void(0)" onclick="document.getElementById('addressDelete').submit()" class="text-danger">삭제</a>
+                                </form>
                             </div>
                         </div>
                         <div class="address-detail">
@@ -223,7 +225,9 @@
                             <div class="action-links">
                                 <a href="#" class="text-primary">기본배송지로 설정</a>
                                 <a href="#">수정</a>
-                                <a href="#" class="text-danger">삭제</a>
+                                <form id="addressDelete2" th:action="@{/member/mypage/addressManage/delete(addressNo=${address.getNo()})}" method="post">
+                                    <a href="javascript:void(0)" onclick="document.getElementById('addressDelete2').submit()" class="text-danger">삭제</a>
+                                </form>
                             </div>
                         </div>
                         <div class="address-detail">

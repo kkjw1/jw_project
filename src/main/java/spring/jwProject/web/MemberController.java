@@ -244,6 +244,8 @@ public class MemberController {
         List<Address> addresses = addressService.getAddresses(memberId);
         if (addresses.isEmpty()) {
             model.addAttribute("addresses", Collections.emptyList());
+        } else if (addresses.get(0).getMainAddress() != true) {
+            model.addAttribute("addresses", addresses);
         } else {
             Address mainAddress = addresses.get(0);
             List<Address> addressesList = addresses.subList(1, addresses.size());
@@ -295,6 +297,17 @@ public class MemberController {
         list.add(member.getName());
         list.add(member.getPhoneNumber());
         return list;
+    }
+
+    //배송지 삭제
+    @PostMapping("/mypage/addressManage/delete")
+    public String addressDelete(@RequestParam("addressNo") Long addressNo, HttpServletRequest request, RedirectAttributes redirectAttributes) {
+        if (addressService.delete(addressNo)) {
+            log.info("delete addressNo={}", addressNo);
+        }
+        LoginMember loginMember = (LoginMember) request.getSession().getAttribute(SessionConst.LOGIN_MEMBER);
+        redirectAttributes.addAttribute("memberId", loginMember.getId());
+        return "redirect:/member/mypage/addressManage";
     }
 
 

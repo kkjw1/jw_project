@@ -27,7 +27,7 @@ public class AddressService {
 
 
     /**
-     * 주소 추가
+     * 주소 추가 test용
      * @param address
      * @return 성공:address,실패:exception
      */
@@ -61,8 +61,10 @@ public class AddressService {
         if (address.getAddressName().isEmpty()) {
             address.updateAddressName(address.getRoadAddress());
         }
-        if (address.getMainAddress() != true) {
-            address.updateMain(false);
+        if (address.getMainAddress() == true) {
+            //이전의 기본배송지를 일반 배송지로 변경
+            Address mainAddress = addressRepository.findMainAddress(manageAddress.getMemberId());
+            mainAddress.updateMain(false);
         }
         return addressRepository.save(address);
     }
@@ -76,4 +78,15 @@ public class AddressService {
         return addressRepository.findAddresses(memberId);
     }
     // 주소 수정, 주소 삭제, 주소 변경
+
+    /**
+     * 주소 삭제
+     * @param no
+     * @return 성공:true, 실패:false
+     */
+    public boolean delete(Long no) {
+        return addressRepository.delete(no);
+    }
+
+
 }
