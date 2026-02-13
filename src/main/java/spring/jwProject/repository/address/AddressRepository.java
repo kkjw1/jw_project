@@ -23,7 +23,7 @@ public interface AddressRepository {
      * @param memberId
      * @return 성공:Address, 실패:exception
      */
-    Address findMainAddress(String memberId);
+    List<Address> findMainAddress(String memberId);
 
     /**
      * 주소 수정

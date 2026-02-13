@@ -36,10 +36,10 @@ public class JpaAddressRepository implements AddressRepository {
     }
 
     @Override
-    public Address findMainAddress(String memberId) {
+    public List<Address> findMainAddress(String memberId) {
         return em.createQuery("select a from Address a join fetch a.member where a.mainAddress = true and a.member.id =:memberId", Address.class)
                 .setParameter("memberId", memberId)
-                .getSingleResult();
+                .getResultList();
     }
 
     @Override

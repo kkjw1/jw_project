@@ -27,7 +27,7 @@ public class AddressService {
 
 
     /**
-     * 주소 추가 test용
+     * 주소 추가 (더미 데이터용)
      * @param address
      * @return 성공:address,실패:exception
      */
@@ -63,8 +63,11 @@ public class AddressService {
         }
         if (address.getMainAddress() == true) {
             //이전의 기본배송지를 일반 배송지로 변경
-            Address mainAddress = addressRepository.findMainAddress(manageAddress.getMemberId());
-            mainAddress.updateMain(false);
+            List<Address> mainAddress = addressRepository.findMainAddress(manageAddress.getMemberId());
+            //기본배송지가 없는 경우
+            if (!mainAddress.isEmpty()) {
+                mainAddress.get(0).updateMain(false);
+            }
         }
         return addressRepository.save(address);
     }
