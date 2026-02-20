@@ -24,7 +24,7 @@ public class MemberService {
     private final EntityManager em;
 
     /**
-     * 회원가입 O
+     * 회원가입
      * @param member
      */
     public Member signUp(Member member) {
@@ -32,7 +32,7 @@ public class MemberService {
     }
 
     /**
-     * 아이디 중복 검사 O
+     * 아이디 중복 검사
      * @return 중복아니면 true, 중복이면 false
      */
     public boolean checkId(String id) {
@@ -40,7 +40,7 @@ public class MemberService {
     }
 
     /**
-     * 로그인 O
+     * 회원 로그인
      * @param id
      * @param password
      * @return 성공:Member, 실패:null
@@ -57,7 +57,7 @@ public class MemberService {
     }
 
     /**
-     * 회원 수정 O
+     * 회원 수정
      * @param updateMember
      * @return 성공:Map<필드명, 변경값>, 변경 X일 시 변경값은 공백(""),  실패:null
      */
@@ -109,6 +109,11 @@ public class MemberService {
         return result;
     }
 
+    /**
+     * Member -> UpdateMember
+     * @param member
+     * @return UpdateMember
+     */
     public UpdateMember memberToUpdateMember(Member member) {
         return new UpdateMember(member.getId(),
                 member.getName(),

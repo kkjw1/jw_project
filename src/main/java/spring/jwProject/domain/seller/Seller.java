@@ -29,4 +29,19 @@ public class Seller extends BaseEntity {
     private String roadAddress;
     private String detailAddress;
 
+    public Seller() {
+    }
+
+    public Seller(String id, String password, String email, String name, String phoneNumber, String companyName, String companyPhone, String postcode, String roadAddress, String detailAddress) {
+        this.id = id;
+        this.password = password;
+        this.email = email;
+        this.name = name;
+        this.phoneNumber = phoneNumber;
+        this.companyName = companyName;
+        this.companyPhone = companyPhone;
+        this.postcode = postcode;
+        this.roadAddress = roadAddress;
+        this.detailAddress = detailAddress;
+    }
 }

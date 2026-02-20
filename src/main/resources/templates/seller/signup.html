@@ -44,6 +44,13 @@
             font-weight: bold;
             color: #007bff;
         }
+
+        .required-mark { color: #ae0000; margin-left: 2px; }
+
+        .input-error {
+            border-color: #dc3545 !important;
+            color: #dc3545;
+        }
     </style>
 </head>
 <body class="d-flex justify-content-center align-items-center bg-light">
@@ -54,87 +61,138 @@
         계정 정보와 비즈니스 정보를 입력하여 판매자 활동을 시작하세요.
     </p>
 
-    <form action="seller-login.html" th:action="@{/seller/signup(sellerId=${param.})}" method="post" th:object="${member}">
-
-<!--        <div class="alert alert-danger mb-3" role="alert" style="font-size: 0.875rem;"
-             th:if="${#fields.hasGlobalErrors()}" th:each="err : ${#fields.globalErrors()}" th:text="${err}">
-            회원가입 실패
-        </div>-->
-
+    <form th:action="@{/seller/signup}" th:object="${signUpSeller}" method="post">
         <fieldset>
             <legend>👤 계정 정보</legend>
 
             <div class="form-group">
-                <label for="sellerEmail">이메일 (ID)</label>
+                <label for="id">아이디<span class="required-mark">*</span></label>
                 <input
-                        type="email"
+                        type="text"
                         class="form-control"
-                        id="sellerEmail"
-                        placeholder="example@company.com"
+                        id="id"
+                        th:field="*{id}"
+                        placeholder="아이디를 입력하시오"
+                        onblur="checkDuplicateId()"
                 >
-<!--                <div class="text-danger" style="font-size: 0.875rem;" th:errors="*{sellerEmail}">
-                    이메일 에러
-                </div>-->
+                <div class="text-danger" style="font-size: 0.875rem;" id="duplicatedId"></div>
             </div>
 
             <div class="form-group">
-                <label for="password">비밀번호</label>
+                <label for="password">비밀번호<span class="required-mark">*</span></label>
                 <input
                         type="password"
                         class="form-control"
                         id="password"
+                        th:field="*{password}"
                         placeholder="최소 8자 이상의 비밀번호"
+                        th:errorclass="input-error"
                 >
- <!--               <div class="text-danger" style="font-size: 0.875rem;" th:errors="*{password}">
-                    비밀번호 에러
-                </div>-->
+                <div class="text-danger" style="font-size: 0.875rem;" th:errors="*{password}">
+                   비밀번호 에러
+                </div>
             </div>
 
             <div class="form-group">
-                <label for="sellerName">담당자 이름</label>
+                <label for="email">이메일 (ID)<span class="required-mark">*</span></label>
+                <input
+                        type="email"
+                        class="form-control"
+                        id="email"
+                        th:field="*{email}"
+                        placeholder="example@company.com"
+                        th:errorclass="input-error"
+                >
+                <div class="text-danger" style="font-size: 0.875rem;" th:errors="*{email}">
+                    이메일 에러
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <label for="name">담당자 이름<span class="required-mark">*</span></label>
                 <input
                         type="text"
                         class="form-control"
-                        id="sellerName"
+                        id="name"
+                        th:field="*{name}"
                         placeholder="홍길동"
+                        th:errorclass="input-error"
                 >
-  <!--              <div class="text-danger" style="font-size: 0.875rem;" th:errors="*{sellerName}">
-                    이름 에러
-                </div>-->
+                <div class="text-danger" style="font-size: 0.875rem;" th:errors="*{name}">
+                    담당자 이름 에러
+                </div>
             </div>
+
+            <div class="form-group">
+                <label for="phoneNumber">전화번호<span class="required-mark">*</span></label>
+                <input
+                        type="text"
+                        class="form-control"
+                        id="phoneNumber"
+                        th:field="*{phoneNumber}"
+                        placeholder="010-0000-0000"
+                        th:errorclass="input-error"
+                >
+                <div class="text-danger" style="font-size: 0.875rem;" th:errors="*{phoneNumber}">
+                    전화번호 에러
+                </div>
+            </div>
+
         </fieldset>
 
         <fieldset>
             <legend>🏢 비즈니스 정보</legend>
 
             <div class="form-group">
-                <label for="companyName">회사/상호명</label>
+                <label for="companyName">회사/상호명<span class="required-mark">*</span></label>
                 <input
                         type="text"
                         class="form-control"
                         id="companyName"
+                        th:field="*{companyName}"
                         placeholder="OO 주식회사 또는 상호명"
+                        th:errorclass="input-error"
                 >
-<!--                <div class="text-danger" style="font-size: 0.875rem;" th:errors="*{companyName}">
+                <div class="text-danger" style="font-size: 0.875rem;" th:errors="*{companyName}">
                     회사명 에러
-                </div>-->
+                </div>
             </div>
 
             <div class="form-group">
-                <label for="businessNumber">사업자 등록번호</label>
+                <label for="companyPhone">회사 전화번호</label>
                 <input
                         type="text"
                         class="form-control"
-                        id="businessNumber"
+                        id="companyPhone"
+                        th:field="*{companyPhone}"
                         placeholder="000-00-00000"
                 >
- <!--               <div class="text-danger" style="font-size: 0.875rem;" th:errors="*{businessNumber}">
-                    사업자 등록번호 에러
-                </div>-->
             </div>
 
             <div class="form-group">
-                <label for="mainCategory">주요 판매 품목</label>
+                <label>주소<span class="required-mark">*</span></label>
+                <div class="row mb-2">
+                    <div class="col-6 pr-1">
+                        <input type="text" id="postcode" placeholder="우편번호" class="form-control" readonly th:field="*{postcode}" th:errorclass="input-error">
+                    </div>
+                    <div class="col-6 pl-1">
+                        <input type="button" onclick="execDaumPostcode()" value="우편번호 찾기" class="btn btn-outline-secondary w-100">
+                    </div>
+                </div>
+
+                <input type="text" id="roadAddress" placeholder="도로명주소" class="form-control mb-2" readonly th:field="*{roadAddress}" th:errorclass="input-error">
+                <input type="text" id="detailAddress" placeholder="상세주소 (동, 호수 등)" class="form-control mb-2" th:field="*{detailAddress}">
+                <span id="guide" style="color:#999; display:none; font-size: 0.875rem;" class="mt-2"></span>
+                <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+                <div class="text-danger" style="font-size: 0.875rem;" th:errors="*{postcode}">
+                    주소 에러
+                </div>
+            </div>
+
+
+<!--            <div class="form-group">
+                <label for="mainCategory">[선택]주요 판매 품목</label>
                 <select id="mainCategory" class="form-control">
                     <option value="">선택하세요</option>
                     <option value="fashion">패션/의류</option>
@@ -143,10 +201,10 @@
                     <option value="living">생활/주방</option>
                     <option value="etc">기타</option>
                 </select>
-<!--                <div class="text-danger" style="font-size: 0.875rem;" th:errors="*{mainCategory}">
+                <div class="text-danger" style="font-size: 0.875rem;" th:errors="*{mainCategory}">
                     카테고리 에러
-                </div>-->
-            </div>
+                </div>
+            </div>-->
         </fieldset>
 
         <div class="form-group form-check mb-4 mt-3">
@@ -157,7 +215,7 @@
         </div>
 
         <div class="mb-3">
-            <button type="submit" class="btn btn-success w-100" style="padding: 10px;">
+            <button type="submit" id="signupButton" class="btn btn-success w-100" style="padding: 10px;">
                 판매자 가입 완료
             </button>
         </div>
@@ -171,6 +229,72 @@
         </div>
     </form>
 </div>
+
+<script th:inline="javascript">
+    function checkDuplicateId() {
+        const id = document.getElementById('id');
+        const idVal = id.value;
+        const msg = document.getElementById('duplicatedId');
+        const button = document.getElementById('signupButton');
+
+        if (idVal === "") {
+            msg.innerText = "아이디를 입력해주세요";
+            id.classList.add("input-error");
+            button.disabled = true;
+            return;
+        }
+        fetch(`/seller/signup/checkId?sellerId=${idVal}`)
+            .then(res => res.json())
+            .then(isAvailable => {
+                if(isAvailable) {
+                    msg.innerText = "";
+                    id.classList.remove("input-error");
+                    button.disabled = false;
+                }
+                else {
+                    msg.innerText = "이미 사용 중인 아이디입니다."
+                    id.classList.add("input-error");
+                    button.disabled = true;
+                }
+            })
+            .catch(err => console.log("checkDuplicateId Error:", err))
+    }
+
+    function execDaumPostcode() {
+        new daum.Postcode({
+            oncomplete: function(data) {
+                var roadAddr = data.roadAddress; // 도로명 주소 변수
+                var extraRoadAddr = ''; // 참고 항목 변수
+
+                if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
+                    extraRoadAddr += data.bname;
+                }
+                // 건물명이 있고, 공동주택일 경우 추가한다.
+                if(data.buildingName !== '' && data.apartment === 'Y'){
+                    extraRoadAddr += (extraRoadAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+                }
+                // 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
+                if(extraRoadAddr !== ''){
+                    extraRoadAddr = ' (' + extraRoadAddr + ')';
+                }
+
+                document.getElementById('postcode').value = data.zonecode;
+                document.getElementById("roadAddress").value = roadAddr;
+
+                var guideTextBox = document.getElementById("guide");
+                if(data.autoRoadAddress) {
+                    var expRoadAddr = data.autoRoadAddress + extraRoadAddr;
+                    guideTextBox.innerHTML = '(예상 도로명 주소 : ' + expRoadAddr + ')';
+                    guideTextBox.style.display = 'block';
+
+                } else {
+                    guideTextBox.innerHTML = '';
+                    guideTextBox.style.display = 'none';
+                }
+            }
+        }).open();
+    }
+</script>
 
 </body>
 </html>
