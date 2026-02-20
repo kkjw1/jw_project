@@ -97,6 +97,34 @@ public class AddressService {
      * @return 성공:Address, 실패: exception
      */
     public Address addressModify(UpdateAddress updateAddress) {
-        return addressRepository.update(updateAddress);
+        Address address = new Address();
+        address.updateAddressName(updateAddress.getAddressName());
+        address.updateRecipientName(updateAddress.getRecipientName());
+        address.updatePhoneNumber(updateAddress.getPhoneNumber());
+        address.updatePostcode(updateAddress.getPostcode());
+        address.updateRoadAddress(updateAddress.getRoadAddress());
+        address.updateDetailAddress(updateAddress.getDetailAddress());
+        address.updateDeliveryRequest(updateAddress.getDeliveryRequest());
+        return addressRepository.update(address, updateAddress.getAddressNo());
     }
+
+    /**
+     * 기본 배송지로 변경
+     * @param addressNo, memberId
+     * @return 성공:Address, 실패:exception
+     */
+    public Address mainUpdate(Long addressNo, String memberId) {
+        List<Address> beforeMain = addressRepository.findMainAddress(memberId);
+
+        Address afterMain = addressRepository.findByNo(addressNo);
+        afterMain.updateMainAddress(true);
+
+        if (!beforeMain.isEmpty()) {
+            beforeMain.get(0).updateMainAddress(false);
+            addressRepository.update(beforeMain.get(0), beforeMain.get(0).getNo());
+        }
+
+        return addressRepository.update(afterMain, addressNo);
+    }
+
 }

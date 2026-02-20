@@ -220,6 +220,63 @@ class AddressServiceTest {
 
         Assertions.assertThat(address.getAddressName()).isEqualTo("변경");
     }
-    
+
+    @Test
+    @DisplayName("기본배송지로 변경 - 기본배송지 있는 경우")
+    public void test9() throws Exception {
+        //given
+        Member m1 = new Member("qqqq", "qqqq", "qqqq", "qqqq", Gender.MAN, "SKT", "010-1234-1234");
+        Member m2 = new Member("wwww", "wwww", "wwww", "wwww", Gender.MAN, "KT", "010-2222-3333");
+        em.persist(m1);
+        em.persist(m2);
+        Address a1 = new Address(m1, "테스트주소1", "사람1", "010-1111-1111", "11111", "경기 성남시 분당구", "101호", "요청사항1", true);
+        Address a3 = new Address(m1, "테스트주소3", "사람3", "010-3333-3333", "33333", "경기 성남시 분당구", "303호", "요청사항3", false);
+        Address a4 = new Address(m2, "테스트주소4", "사람4", "010-4444-4444", "44444", "경기 성남시 분당구", "404호", "요청사항4", false);
+        em.persist(a1);
+        em.persist(a3);
+        em.persist(a4);
+        em.flush();
+        em.clear();
+
+        //when
+        Address ad = em.createQuery("select a from Address a where a.addressName=:addressName", Address.class)
+                .setParameter("addressName", "테스트주소3")
+                .getSingleResult();
+        Address updateAddress = service.mainUpdate(ad.getNo(), "qqqq");
+
+        //then
+        Assertions.assertThat(updateAddress.getMainAddress()).isTrue();
+        Address beforeAddress = em.createQuery("select a from Address a where a.addressName=:addressName", Address.class)
+                .setParameter("addressName", "테스트주소1")
+                .getSingleResult();
+        Assertions.assertThat(beforeAddress.getMainAddress()).isFalse();
+    }
+
+    @Test
+    @DisplayName("기본배송지로 변경 - 기본배송지 없는 경우")
+    public void test10() throws Exception {
+        //given
+        Member m1 = new Member("qqqq", "qqqq", "qqqq", "qqqq", Gender.MAN, "SKT", "010-1234-1234");
+        Member m2 = new Member("wwww", "wwww", "wwww", "wwww", Gender.MAN, "KT", "010-2222-3333");
+        em.persist(m1);
+        em.persist(m2);
+        Address a1 = new Address(m1, "테스트주소1", "사람1", "010-1111-1111", "11111", "경기 성남시 분당구", "101호", "요청사항1", false);
+        Address a3 = new Address(m1, "테스트주소3", "사람3", "010-3333-3333", "33333", "경기 성남시 분당구", "303호", "요청사항3", false);
+        Address a4 = new Address(m2, "테스트주소4", "사람4", "010-4444-4444", "44444", "경기 성남시 분당구", "404호", "요청사항4", false);
+        em.persist(a1);
+        em.persist(a3);
+        em.persist(a4);
+        em.flush();
+        em.clear();
+
+        //when
+        Address ad = em.createQuery("select a from Address a where a.addressName=:addressName", Address.class)
+                .setParameter("addressName", "테스트주소3")
+                .getSingleResult();
+        Address updateAddress = service.mainUpdate(ad.getNo(), "qqqq");
+
+        //then
+        Assertions.assertThat(updateAddress.getMainAddress()).isTrue();
+    }
     
 }

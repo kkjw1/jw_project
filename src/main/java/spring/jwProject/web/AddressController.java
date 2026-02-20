@@ -142,6 +142,9 @@ public class AddressController {
             return "member/address_manage_update";
         }
 
+        if (updateAddress.getAddressName().isEmpty()) {
+            updateAddress.setAddressName(updateAddress.getRoadAddress());
+        }
         updateAddress.setAddressNo(addressNo);
         addressService.addressModify(updateAddress);
 
@@ -150,4 +153,14 @@ public class AddressController {
         return "redirect:/member/mypage/addressManage";
     }
 
+    @PostMapping("/mainUpdate")
+    public String addressMainUpdate(@RequestParam("addressNo") Long addressNo, HttpServletRequest request, Model model,
+                                    RedirectAttributes redirectAttributes) {
+        LoginMember loginMember = (LoginMember) request.getSession().getAttribute(SessionConst.LOGIN_MEMBER);
+
+        addressService.mainUpdate(addressNo, loginMember.getId());
+
+        redirectAttributes.addAttribute("memberId", loginMember.getId());
+        return "redirect:/member/mypage/addressManage";
+    }
 }

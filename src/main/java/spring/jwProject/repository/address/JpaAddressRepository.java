@@ -5,7 +5,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import spring.jwProject.domain.address.Address;
-import spring.jwProject.validation.form.UpdateAddress;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -51,15 +50,15 @@ public class JpaAddressRepository implements AddressRepository {
     }
 
     @Override
-    public Address update(UpdateAddress updateAddress) {
-        Address findAddress = findByNo(updateAddress.getAddressNo());
-        findAddress.updateAddressName(updateAddress.getAddressName());
-        findAddress.updateRecipientName(updateAddress.getRecipientName());
-        findAddress.updatePhoneNumber(updateAddress.getPhoneNumber());
-        findAddress.updatePostcode(updateAddress.getPostcode());
-        findAddress.updateRoadAddress(updateAddress.getRoadAddress());
-        findAddress.updateDetailAddress(updateAddress.getDetailAddress());
-        findAddress.updateDeliveryRequest(updateAddress.getDeliveryRequest());
+    public Address update(Address address, Long addressNo) {
+        Address findAddress = findByNo(addressNo);
+        findAddress.updateAddressName(address.getAddressName());
+        findAddress.updateRecipientName(address.getRecipientName());
+        findAddress.updatePhoneNumber(address.getPhoneNumber());
+        findAddress.updatePostcode(address.getPostcode());
+        findAddress.updateRoadAddress(address.getRoadAddress());
+        findAddress.updateDetailAddress(address.getDetailAddress());
+        findAddress.updateDeliveryRequest(address.getDeliveryRequest());
         return findAddress;
     }
 

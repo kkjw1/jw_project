@@ -216,16 +216,17 @@
                 </div>
 
                 <div class="address-card shadow-sm" th:each="address : ${addresses}">
-                    <form id="addressDelete2" th:action="@{/member/mypage/addressManage/delete(addressNo=${address.getNo()})}" method="post"></form>
+                    <form th:id="|addressDelete_${address.getNo()}|" th:action="@{/member/mypage/addressManage/delete(addressNo=${address.getNo()})}" method="post"></form>
+                    <form th:id="|addressMainUpdate_${address.getNo()}|" th:action="@{/member/mypage/addressManage/mainUpdate(addressNo=${address.getNo()})}" method="post"></form>
                     <div class="p-4">
                         <div class="d-flex justify-content-between mb-2">
                             <div>
                                 <span class="address-name" th:text="${address.getAddressName()}">회사</span>
                             </div>
                             <div class="action-links">
-                                <a href="#" class="text-primary">기본배송지로 설정</a>
+                                <a href="javascript:void(0)" th:onclick="|document.getElementById('addressMainUpdate_${address.getNo()}').submit()|" class="text-primary">기본배송지로 설정</a>
                                 <a href="#" th:href="@{/member/mypage/addressManage/update(addressNo=${address.getNo()})}">수정</a>
-                                <a href="javascript:void(0)" onclick="document.getElementById('addressDelete2').submit()" class="text-danger">삭제</a>
+                                <a href="javascript:void(0)" th:onclick="|document.getElementById('addressDelete_${address.getNo()}').submit()|" class="text-danger">삭제</a>
                             </div>
                         </div>
                         <div class="address-detail">

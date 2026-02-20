@@ -29,16 +29,16 @@ public interface AddressRepository {
     /**
      * 기본 배송지 찾기
      * @param memberId
-     * @return 성공:Address, 실패:exception
+     * @return 성공:Address, 실패:빈리스트
      */
     List<Address> findMainAddress(String memberId);
 
     /**
      * 주소 수정
-     * @param updateAddress
+     * @param address, addressNo
      * @return 성공:Address, 실패:exception
      */
-    Address update(UpdateAddress updateAddress);
+    Address update(Address address, Long addressNo);
 
     /**
      * 주소 삭제
